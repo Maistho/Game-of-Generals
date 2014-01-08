@@ -58,7 +58,7 @@ namespace Game_of_Generals {
 
 		void rect_MouseUp(object sender, MouseButtonEventArgs e) {
 			if (currentPlayer.pieces.Count != 0) {
-				//Show selection screen
+				pnlP1PiecesGrid.Visibility = System.Windows.Visibility.Visible;
 			} else {
 				//Do nothing?
 			}

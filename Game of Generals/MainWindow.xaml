@@ -18,7 +18,9 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Grid Name="pnlPiecesGrid" Grid.Row="0">
+            <Grid Name="pnlP1PiecesGrid" Grid.Row="0" Visibility="Hidden">
+            </Grid>
+            <Grid Name="pnlP2PiecesGrid" Grid.Row="1" Visibility="Hidden">
             </Grid>
         </Grid>
         <Grid Name="pnlBoardGrid" Grid.Column="1" Grid.Row="1" ShowGridLines="True">

@@ -5,6 +5,23 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game of Generals", "Game of Generals\Game of Generals.csproj", "{775712F4-51BC-4690-BE0E-A5AC33BFDD54}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B0E86018-F68B-4284-91CD-7EEC51613DED}"
+	ProjectSection(SolutionItems) = preProject
+		Game of Generals\graphics\1.png = Game of Generals\graphics\1.png
+		Game of Generals\graphics\10.png = Game of Generals\graphics\10.png
+		Game of Generals\graphics\11.png = Game of Generals\graphics\11.png
+		Game of Generals\graphics\12.png = Game of Generals\graphics\12.png
+		Game of Generals\graphics\13.png = Game of Generals\graphics\13.png
+		Game of Generals\graphics\2.png = Game of Generals\graphics\2.png
+		Game of Generals\graphics\3.png = Game of Generals\graphics\3.png
+		Game of Generals\graphics\4.png = Game of Generals\graphics\4.png
+		Game of Generals\graphics\5.png = Game of Generals\graphics\5.png
+		Game of Generals\graphics\6.png = Game of Generals\graphics\6.png
+		Game of Generals\graphics\7.png = Game of Generals\graphics\7.png
+		Game of Generals\graphics\8.png = Game of Generals\graphics\8.png
+		Game of Generals\graphics\9.png = Game of Generals\graphics\9.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
