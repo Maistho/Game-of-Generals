@@ -1,8 +1,20 @@
 ﻿<Window x:Class="Game_of_Generals.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+        Title="MainWindow" Height="650" Width="650">
+    <Grid Name="pnlMainGrid" Background="Beige">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="600"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="600"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Rectangle Grid.Column="1" Grid.Row="1" Fill="AliceBlue"/>
+        <Grid Name="pnlBoardGrid" Grid.Column="1" Grid.Row="1" ShowGridLines="True">
+        </Grid>
     </Grid>
 </Window>

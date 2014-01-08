@@ -23,6 +23,25 @@ namespace Game_of_Generals
         public MainWindow()
         {
             InitializeComponent();
+            paintGrid();
+        }
+
+        private void paintGrid()
+        {
+            for(int i = 10; i >= 0; i--)
+            {
+                RowDefinition row = new RowDefinition();
+                row.Height = new GridLength(60);
+                pnlBoardGrid.RowDefinitions.Add(row);
+                ColumnDefinition column = new ColumnDefinition();
+                column.Width = new GridLength(60);
+                pnlBoardGrid.ColumnDefinitions.Add(column);
+            }
+        }
+
+        private void pnlMainGrid_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("You clicked at: " + e.GetPosition(this).ToString());
         }
     }
 }
