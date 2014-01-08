@@ -65,13 +65,23 @@ namespace Game_of_Generals {
         public ObservableCollection<Piece> pieces = new ObservableCollection<Piece>();
 
         public Player() {
-            for (int i = 0; i > 16; ++i) {
-                //populate list with pieces
+            //TODO: Ask rule engine how many different pieces
+            for (int i = 0; i > 15; ++i) {
+                //TODO: Ask rule engine how many pieces of current rank to add
+                pieces.Add(new Piece(i));
             }
         }
     }
 
     public class Piece {
         private int rank;
+
+        public Piece(int r) {
+            rank = r;
+        }
+
+        public int getRank() {
+            return rank;
+        }
     }
 }
