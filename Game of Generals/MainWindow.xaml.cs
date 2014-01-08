@@ -20,27 +20,48 @@ namespace Game_of_Generals {
     /// </summary>
     public partial class MainWindow : Window {
 
-		private Player player1, player2, currentPlayer;
+		private Player player1, player2;
+		private int currentPlayer;
+		private int rows, columns;
         public MainWindow() {
             InitializeComponent();
 			player1 = new Player();
 			player2 = new Player();
-			currentPlayer = player1;
+			currentPlayer = 1;
+			rows = 8;
+			columns = 9;
             paintGrid();
-
         }
 
         private void paintGrid() {
-            for (int i = 9; i > 0; --i) {
+            for (int i = rows; i > 0; --i) {
                 RowDefinition row = new RowDefinition();
                 row.Height = new GridLength(1, GridUnitType.Star);
-                pnlBoardGrid.RowDefinitions.Add(row);
-            }
-            for (int i = 8; i > 0; --i) {
-                ColumnDefinition column = new ColumnDefinition();
-                column.Width = new GridLength(1, GridUnitType.Star);
-                pnlBoardGrid.ColumnDefinitions.Add(column);
-            }
+				pnlBoardGrid.RowDefinitions.Add(row);
+			} for (int i = columns; i > 0; --i) {
+				ColumnDefinition column = new ColumnDefinition();
+				column.Width = new GridLength(1, GridUnitType.Star);
+				pnlBoardGrid.ColumnDefinitions.Add(column);
+			}
+
+			for (int i = rows / 2; i > 0; --i) {
+				RowDefinition row = new RowDefinition();
+				row.Height = new GridLength(1, GridUnitType.Star);
+				pnlP1PiecesGrid.RowDefinitions.Add(row);
+			} for (int i = rows / 2; i > 0; --i) {
+				RowDefinition row = new RowDefinition();
+				row.Height = new GridLength(1, GridUnitType.Star);
+				pnlP2PiecesGrid.RowDefinitions.Add(row);
+			} for (int i = columns; i > 0; --i) {
+				ColumnDefinition column = new ColumnDefinition();
+				column.Width = new GridLength(1, GridUnitType.Star);
+				pnlP1PiecesGrid.ColumnDefinitions.Add(column);
+			} for (int i = columns; i > 0; --i) {
+				ColumnDefinition column = new ColumnDefinition();
+				column.Width = new GridLength(1, GridUnitType.Star);
+				pnlP2PiecesGrid.ColumnDefinitions.Add(column);
+			}
+
             for (int i = pnlBoardGrid.RowDefinitions.Count(); i >= 0; --i) {
                 for (int j = pnlBoardGrid.ColumnDefinitions.Count(); j >= 0; --j) {
                     Rectangle rect = new Rectangle();
@@ -48,6 +69,7 @@ namespace Game_of_Generals {
                     pnlBoardGrid.Children.Add(rect);
                     Grid.SetColumn(rect, j);
                     Grid.SetRow(rect, i);
+					rect.Stroke = Brushes.Green;
                     rect.MouseEnter += rect_MouseEnter;
                     rect.MouseLeave += rect_MouseLeave;
 					rect.MouseUp += rect_MouseUp;
@@ -57,10 +79,13 @@ namespace Game_of_Generals {
         }
 
 		void rect_MouseUp(object sender, MouseButtonEventArgs e) {
-			if (currentPlayer.pieces.Count != 0) {
+			if (currentPlayer == 1 && player1.pieces.Count() != 0) {
 				pnlP1PiecesGrid.Visibility = System.Windows.Visibility.Visible;
-			} else {
-				//Do nothing?
+
+				//Select piece and place it
+			} else if(currentPlayer == 2 && player2.pieces.Count() != 0) {
+				pnlP2PiecesGrid.Visibility = System.Windows.Visibility.Visible;
+				//Select piece and place it
 			}
 		}
 
@@ -80,7 +105,7 @@ namespace Game_of_Generals {
 
         public Player() {
             //TODO: Ask rule engine how many different pieces
-            for (int i = 0; i > 15; ++i) {
+            for(int i = 0; i <= 15; ++i) {
                 //TODO: Ask rule engine how many pieces of current rank to add
                 pieces.Add(new Piece(i));
             }
