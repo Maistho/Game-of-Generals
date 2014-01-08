@@ -28,20 +28,44 @@ namespace Game_of_Generals
 
         private void paintGrid()
         {
-            for(int i = 10; i >= 0; i--)
-            {
-                RowDefinition row = new RowDefinition();
-                row.Height = new GridLength(60);
-                pnlBoardGrid.RowDefinitions.Add(row);
-                ColumnDefinition column = new ColumnDefinition();
-                column.Width = new GridLength(60);
-                pnlBoardGrid.ColumnDefinitions.Add(column);
-            }
+			for (int i = 9; i > 0; --i)
+			{
+				RowDefinition row = new RowDefinition();
+				row.Height = new GridLength(1, GridUnitType.Star);
+				pnlBoardGrid.RowDefinitions.Add(row);
+			}
+			for (int i = 8; i > 0; --i)
+			{
+				ColumnDefinition column = new ColumnDefinition();
+				column.Width = new GridLength(1, GridUnitType.Star);
+				pnlBoardGrid.ColumnDefinitions.Add(column);
+			}
+            for (int i = pnlBoardGrid.RowDefinitions.Count(); i >= 0; --i)
+			{
+				for (int j = pnlBoardGrid.ColumnDefinitions.Count(); j >= 0; --j)
+				{
+					Rectangle rect = new Rectangle();
+					rect.Fill = Brushes.Black;
+					pnlBoardGrid.Children.Add(rect);
+					Grid.SetColumn(rect, j);
+					Grid.SetRow(rect, i);
+					rect.MouseEnter += rect_MouseEnter;
+					rect.MouseLeave += rect_MouseLeave;
+				}
+			}
+                
         }
 
-        private void pnlMainGrid_MouseUp(object sender, MouseButtonEventArgs e)
+        void rect_MouseLeave(object sender, MouseEventArgs e)
         {
-            MessageBox.Show("You clicked at: " + e.GetPosition(this).ToString());
+            Rectangle rect = sender as Rectangle;
+            rect.Fill = Brushes.Black;
+        }
+
+        private void rect_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Rectangle rect = sender as Rectangle;
+            rect.Fill = Brushes.Blue;
         }
     }
 }
