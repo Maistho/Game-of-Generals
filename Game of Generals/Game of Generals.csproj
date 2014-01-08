@@ -93,6 +93,38 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="pieces\1.png" />
+    <Resource Include="pieces\10.png" />
+    <Resource Include="pieces\10r.png" />
+    <Resource Include="pieces\11.png" />
+    <Resource Include="pieces\11r.png" />
+    <Resource Include="pieces\12.png" />
+    <Resource Include="pieces\12r.png" />
+    <Resource Include="pieces\13.png" />
+    <Resource Include="pieces\13r.png" />
+    <Resource Include="pieces\14.png" />
+    <Resource Include="pieces\14r.png" />
+    <Resource Include="pieces\1r.png" />
+    <Resource Include="pieces\2.png" />
+    <Resource Include="pieces\2r.png" />
+    <Resource Include="pieces\3.png" />
+    <Resource Include="pieces\3r.png" />
+    <Resource Include="pieces\4.png" />
+    <Resource Include="pieces\4r.png" />
+    <Resource Include="pieces\5.png" />
+    <Resource Include="pieces\5r.png" />
+    <Resource Include="pieces\6.png" />
+    <Resource Include="pieces\6r.png" />
+    <Resource Include="pieces\7.png" />
+    <Resource Include="pieces\7r.png" />
+    <Resource Include="pieces\8.png" />
+    <Resource Include="pieces\8r.png" />
+    <Resource Include="pieces\9.png" />
+    <Resource Include="pieces\9r.png" />
+    <Resource Include="pieces\empty.png" />
+    <Resource Include="pieces\emptyr.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

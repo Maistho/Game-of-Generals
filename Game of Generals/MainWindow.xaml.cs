@@ -75,6 +75,16 @@ namespace Game_of_Generals {
 					rect.MouseUp += rect_MouseUp;
                 }
             }
+			Image img = new Image();
+			BitmapImage src = new BitmapImage();
+			src.BeginInit();
+			src.UriSource = new Uri("pack://application:,,,/Game of Generals;component/pieces/14r.png", UriKind.Absolute);
+			src.EndInit();
+			img.Source = src;
+			img.Stretch = Stretch.Uniform;
+			pnlBoardGrid.Children.Add(img);
+			Grid.SetColumn(img, 1);
+			Grid.SetRow(img, 2);
 
         }
 
@@ -110,7 +120,6 @@ namespace Game_of_Generals {
 					//TODO: Ask rule engine how many pieces of current rank to add
 					pieces.Add(new Piece(i));
 				}
-
             }
         }
     }
