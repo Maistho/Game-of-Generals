@@ -106,8 +106,11 @@ namespace Game_of_Generals {
         public Player() {
             //TODO: Ask rule engine how many different pieces
             for(int i = 0; i <= 15; ++i) {
-                //TODO: Ask rule engine how many pieces of current rank to add
-                pieces.Add(new Piece(i));
+				for(int j = 1; j >= 0; --j) {
+					//TODO: Ask rule engine how many pieces of current rank to add
+					pieces.Add(new Piece(i));
+				}
+
             }
         }
     }
