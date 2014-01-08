@@ -13,7 +13,14 @@
             <ColumnDefinition Width="480"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Rectangle Grid.Column="1" Grid.Row="1" Fill="AliceBlue"/>
+        <Grid Name="pnlOverlayGrid" Grid.Column="1" Grid.Row="1" Panel.ZIndex="100">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Name="pnlPiecesGrid" Grid.Row="0">
+            </Grid>
+        </Grid>
         <Grid Name="pnlBoardGrid" Grid.Column="1" Grid.Row="1" ShowGridLines="True">
         </Grid>
     </Grid>

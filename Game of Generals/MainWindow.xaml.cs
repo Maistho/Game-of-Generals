@@ -20,9 +20,14 @@ namespace Game_of_Generals {
     /// </summary>
     public partial class MainWindow : Window {
 
+		private Player player1, player2, currentPlayer;
         public MainWindow() {
             InitializeComponent();
+			player1 = new Player();
+			player2 = new Player();
+			currentPlayer = player1;
             paintGrid();
+
         }
 
         private void paintGrid() {
@@ -45,10 +50,19 @@ namespace Game_of_Generals {
                     Grid.SetRow(rect, i);
                     rect.MouseEnter += rect_MouseEnter;
                     rect.MouseLeave += rect_MouseLeave;
+					rect.MouseUp += rect_MouseUp;
                 }
             }
 
         }
+
+		void rect_MouseUp(object sender, MouseButtonEventArgs e) {
+			if (currentPlayer.pieces.Count != 0) {
+				//Show selection screen
+			} else {
+				//Do nothing?
+			}
+		}
 
         void rect_MouseLeave(object sender, MouseEventArgs e) {
             Rectangle rect = sender as Rectangle;
