@@ -84,14 +84,6 @@ namespace Game_of_Generals {
 					rect.MouseUp += rect_MouseUp;
                 }
             }
-			Image img = new Image();
-			img.Source = new BitmapImage(new Uri("pack://application:,,,/Game of Generals;component/pieces/0r.png", UriKind.Absolute));
-			img.Stretch = Stretch.Uniform;
-			pnlBoardGrid.Children.Add(img);
-			Grid.SetColumn(img, 1);
-			Grid.SetRow(img, 2);
-			img.MouseUp += img_MouseUp;
-
         }
 
 		private void populatePlacement(int player) {
@@ -105,14 +97,6 @@ namespace Game_of_Generals {
 					++j;
 				}
 			}
-		}
-
-		void img_MouseUp(object sender, MouseButtonEventArgs e) {
-			Image img = sender as Image;
-			int column = Grid.GetColumn(img);
-			int row = Grid.GetRow(img);
-			//Do stuff like moving the image
-
 		}
 
 		void rect_MouseUp(object sender, MouseButtonEventArgs e) {
@@ -136,6 +120,10 @@ namespace Game_of_Generals {
 			}
 		}
         }
+
+		private void finishButton_MouseUp(object sender, MouseButtonEventArgs e) {
+			switchRectangle.Visibility = Visibility.Visible;
+		}
     }
 
     public class Player {
