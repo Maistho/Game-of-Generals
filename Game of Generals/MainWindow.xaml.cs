@@ -174,6 +174,8 @@ namespace Game_of_Generals {
 		void img_MouseUp(object sender, MouseButtonEventArgs e) {
 			if (onBoard) {
 				//Piece is on board, init moving
+                //TODO: Ask rules engine about legal destinations
+                //Highlight destinations, wait for click.
 			} else {
 				Position = new int[2] { MainWindow.placementColumn, MainWindow.placementRow };
 				onBoard = true;
@@ -215,8 +217,10 @@ namespace Game_of_Generals {
         public Grid Parent {
             set {
                 Grid grid = this.img.Parent as Grid;
-                grid.Children.Remove(this.img);
-                Parent = (Grid)Application.Current.MainWindow.FindName("pnlBoardGrid");
+                if (grid != null) {
+                    grid.Children.Remove(this.img);
+                    Parent = value;
+                }
                 value.Children.Add(img);
             }
         }
