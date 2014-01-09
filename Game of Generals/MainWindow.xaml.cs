@@ -20,7 +20,7 @@ namespace Game_of_Generals {
     /// </summary>
     public partial class MainWindow : Window {
 
-		private Player[] players = {new Player(new Grid(),true), new Player(new Grid(),false)};
+		public static Player[] players = {new Player(new Grid(),1), new Player(new Grid(),0)};
 		private int currentPlayer;
 		private int rows, columns;
 		private Rectangle lastRect;
@@ -132,14 +132,14 @@ namespace Game_of_Generals {
 		public Grid placementGrid;
 		public int onBoardPieces;
 
-        public Player(Grid pGrid, bool colour) {
+        public Player(Grid pGrid, int player) {
 			placementGrid = pGrid;
 			onBoardPieces = 0;
             //TODO: Ask rule engine how many different pieces
             for(int i = 0; i <= 14; ++i) {
 				for(int j = 1; j > 0; --j) {
 					//TODO: Ask rule engine how many pieces of current rank to add
-					pieces.Add(new Piece(this, i, colour));
+					pieces.Add(new Piece(i, player));
 				}
             }
         }
@@ -147,19 +147,17 @@ namespace Game_of_Generals {
 
     public class Piece {
         private int rank;
-        private bool colour; //True is green
         private Image img;
         private bool onBoard;
-		private Player player;
+		private int player;
 
 
-        public Piece(Player p, int r, bool c) {
-			player = p;
+        public Piece(int r, int p) {
             rank = r;
-            colour = c;
+            player = p;
             onBoard = false;
             img = new Image();
-			img.Source = new BitmapImage(new Uri("pack://application:,,,/Game of Generals;component/pieces/" + rank.ToString() + (colour ? "" : "r") + ".png", UriKind.Absolute));
+			img.Source = new BitmapImage(new Uri("pack://application:,,,/Game of Generals;component/pieces/" + rank.ToString() + (player == 1 ? "" : "r") + ".png", UriKind.Absolute));
             img.Stretch = Stretch.Uniform;
 			img.MouseUp += img_MouseUp;
         }
@@ -168,7 +166,10 @@ namespace Game_of_Generals {
 			if (onBoard) {
 				//Piece is on board, init moving
                 //TODO: Ask rules engine about legal destinations
-                //Highlight destinations, wait for click.
+                //Highlight destinations
+                if (MainWindow.moving) {
+                    
+                }
                 MainWindow.moving = true;
                 MainWindow.movedPiece = this;
 			} else {
@@ -176,7 +177,7 @@ namespace Game_of_Generals {
 				Position = new int[2] { MainWindow.placementColumn, MainWindow.placementRow };
 				onBoard = true;
 				Parent = (Grid)Application.Current.MainWindow.FindName("pnlBoardGrid");
-				player.onBoardPieces += 1;
+				MainWindow.players[player].onBoardPieces += 1;
 					MainWindow.placementColumn = -1;
 					MainWindow.placementRow = -1;
 				}
@@ -190,8 +191,8 @@ namespace Game_of_Generals {
             return rank;
 		}
 
-        public bool getColour() {
-            return colour;
+        public int getPlayer() {
+            return player;
         }
 
 
