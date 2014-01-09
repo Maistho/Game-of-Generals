@@ -18,14 +18,15 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Rectangle Name="switchRectangle" Grid.Row="0" Grid.RowSpan="2" Fill="Black" Visibility="Hidden"/>
+            
             <Grid Name="pnlP1PiecesGrid" Grid.Row="0" Visibility="Hidden">
             </Grid>
             <Grid Name="pnlP2PiecesGrid" Grid.Row="1" Visibility="Hidden">
             </Grid>
+            <Rectangle Name="switchRectangle" Grid.Row="0" Grid.RowSpan="2" Fill="Black" Visibility="Hidden"/>
         </Grid>
         <Grid Name="pnlBoardGrid" Grid.Column="1" Grid.Row="1">
         </Grid>
-        <Button Name="finishButton" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Finish turn" Click="finishButton_Click" />
+        <Button Name="finishButton" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Finish turn" FontSize="30" Click="finishButton_Click" />
     </Grid>
 </Window>
