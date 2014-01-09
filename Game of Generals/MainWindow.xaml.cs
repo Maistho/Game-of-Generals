@@ -20,7 +20,7 @@ namespace Game_of_Generals {
     /// </summary>
     public partial class MainWindow : Window {
 
-		public static Player[] players = {new Player(new Grid(),1), new Player(new Grid(),0)};
+		public static Player[] players = {new Player(new Grid(),0), new Player(new Grid(),1)};
 		private int currentPlayer;
 		private int rows, columns;
 		private Rectangle lastRect;
@@ -157,7 +157,7 @@ namespace Game_of_Generals {
             player = p;
             onBoard = false;
             img = new Image();
-			img.Source = new BitmapImage(new Uri("pack://application:,,,/Game of Generals;component/pieces/" + rank.ToString() + (player == 1 ? "" : "r") + ".png", UriKind.Absolute));
+			img.Source = new BitmapImage(new Uri("pack://application:,,,/Game of Generals;component/pieces/" + rank.ToString() + (player == 0 ? "" : "r") + ".png", UriKind.Absolute));
             img.Stretch = Stretch.Uniform;
 			img.MouseUp += img_MouseUp;
         }
@@ -168,10 +168,16 @@ namespace Game_of_Generals {
                 //TODO: Ask rules engine about legal destinations
                 //Highlight destinations
                 if (MainWindow.moving) {
-                    
+                    if (player != MainWindow.movedPiece.getPlayer()) {
+                        MainWindow.movedPiece.Position = this.Position;
+                        //TODO: Ask rules engine which piece to remove
+                    }
+                    MainWindow.moving = false;
+                    MainWindow.movedPiece = null;
+                } else {
+                    MainWindow.moving = true;
+                    MainWindow.movedPiece = this;
                 }
-                MainWindow.moving = true;
-                MainWindow.movedPiece = this;
 			} else {
 				if (MainWindow.placementColumn != -1 && MainWindow.placementRow != -1) {
 				Position = new int[2] { MainWindow.placementColumn, MainWindow.placementRow };
