@@ -25,5 +25,20 @@ namespace Game_of_Generals {
 				return false;
 			}
 		}
+
+		public static int numberOfRanks() {
+			return 14;
+		}
+		public static int numberOfPieces(int rank) {
+			switch(rank){
+				case 1:
+					return 6;
+				case 14:
+					return 2;
+				default:
+					return 1;
+			}
+
+		}
 	}
 }

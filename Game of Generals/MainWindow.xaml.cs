@@ -157,10 +157,10 @@ namespace Game_of_Generals {
 		public Player(Grid pGrid, int player) {
 			placementGrid = pGrid;
 			onBoardPieces = 0;
-			//TODO: Ask rule engine how many different pieces
-			for (int i = 0; i <= 14; ++i) {
-				for (int j = 1; j > 0; --j) {
-					//TODO: Ask rule engine how many pieces of current rank to add
+			int numRanks = Rules.numberOfRanks();
+			for (int i = 0; i <= numRanks; ++i) {
+				int numPieces = Rules.numberOfPieces(i);
+				for (int j = 0; j < numPieces; ++j) {
 					pieces.Add(new Piece(i, player));
 				}
 			}
