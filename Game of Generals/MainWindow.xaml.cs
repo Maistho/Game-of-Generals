@@ -20,7 +20,7 @@ namespace Game_of_Generals {
     /// </summary>
     public partial class MainWindow : Window {
 
-		public static Player[] players = {new Player(new Grid(),0), new Player(new Grid(),1)};
+		public static Player[] players = { new Player(new Grid(), 0), new Player(new Grid(), 1) };
 		private static int currentPlayer;
 		private int rows, columns;
 		private Rectangle lastRect;
@@ -43,7 +43,7 @@ namespace Game_of_Generals {
         }
 
         public static int CurrentPlayer {
-            get { return currentPlayer;}
+			get { return currentPlayer; }
         }
 
         private void paintGrid() {
@@ -108,8 +108,10 @@ namespace Game_of_Generals {
 		void rect_MouseUp(object sender, MouseButtonEventArgs e) {
 			Rectangle rect = sender as Rectangle;
             if (moving) {
-                //TODO: Ask rules engine if move is legal
-                movedPiece.Position = new int[2] { Grid.GetColumn(rect), Grid.GetRow(rect) };
+				int[] newMove = new int[2] { Grid.GetColumn(rect), Grid.GetRow(rect) };
+				if (Rules.legalMove(movedPiece, newMove)) {
+					movedPiece.Position = newMove;
+				}
                 moving = false;
             } else {
                 if (lastRect != null) lastRect.Fill = Brushes.Black;
@@ -157,10 +159,10 @@ namespace Game_of_Generals {
         public Player(Grid pGrid, int player) {
 			placementGrid = pGrid;
 			onBoardPieces = 0;
-            //TODO: Ask rule engine how many different pieces
-            for(int i = 0; i <= 14; ++i) {
-				for(int j = 1; j > 0; --j) {
-					//TODO: Ask rule engine how many pieces of current rank to add
+			int numRanks = Rules.numberOfRanks();
+			for (int i = 0; i <= numRanks; ++i) {
+				int numPieces = Rules.numberOfPieces(i);
+				for (int j = 0; j < numPieces; ++j) {
 					pieces.Add(new Piece(i, player));
 				}
             }
