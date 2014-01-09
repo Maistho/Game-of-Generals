@@ -177,8 +177,6 @@ namespace Game_of_Generals {
 			} else {
 				Position = new int[2] { MainWindow.placementColumn, MainWindow.placementRow };
 				onBoard = true;
-				Grid grid = this.img.Parent as Grid;
-				grid.Children.Remove(this.img);
 				Parent = (Grid)Application.Current.MainWindow.FindName("pnlBoardGrid");
 				//TODO: Hide the board and change player
 				//piece is not on board, finish placement
@@ -214,9 +212,10 @@ namespace Game_of_Generals {
         
         public Grid Parent {
             set {
-                Grid grid = this.img.Parent as Grid;
-                grid.Children.Remove(this.img);
-                Parent = (Grid)Application.Current.MainWindow.FindName("pnlBoardGrid");
+				Grid grid = this.img.Parent as Grid;
+				if (grid != null) {
+					grid.Children.Remove(this.img);
+				}
                 value.Children.Add(img);
             }
         }
