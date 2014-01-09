@@ -20,7 +20,7 @@ namespace Game_of_Generals {
     /// </summary>
     public partial class MainWindow : Window {
 
-		public static Player[] players = {new Player(new Grid(),1), new Player(new Grid(),0)};
+		public static Player[] players = {new Player(new Grid(),0), new Player(new Grid(),1)};
 		private int currentPlayer;
 		private int rows, columns;
 		private Rectangle lastRect;
@@ -169,7 +169,7 @@ namespace Game_of_Generals {
             player = p;
             onBoard = false;
             img = new Image();
-			img.Source = new BitmapImage(new Uri("pack://application:,,,/Game of Generals;component/pieces/" + rank.ToString() + (player == 1 ? "" : "r") + ".png", UriKind.Absolute));
+			img.Source = new BitmapImage(new Uri("pack://application:,,,/Game of Generals;component/pieces/" + rank.ToString() + (player == 0 ? "" : "r") + ".png", UriKind.Absolute));
             img.Stretch = Stretch.Uniform;
 			img.MouseUp += img_MouseUp;
         }
