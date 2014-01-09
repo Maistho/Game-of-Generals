@@ -23,7 +23,8 @@ namespace Game_of_Generals {
 		private Player[] players = {new Player(new Grid()), new Player(new Grid())};
 		private int currentPlayer;
 		private int rows, columns;
-		private int placementColumn, placementRow;
+		public int placementColumn;
+		public int placementRow;
         public MainWindow() {
             InitializeComponent();
 			DataContext = this;
@@ -33,6 +34,9 @@ namespace Game_of_Generals {
 			rows = 8;
 			columns = 9;
             paintGrid();
+			currentPlayer = 1;
+			populatePlacement();
+			currentPlayer = 0;
 			populatePlacement();
         }
 
@@ -114,7 +118,7 @@ namespace Game_of_Generals {
 		}
 
 		void rect_MouseUp(object sender, MouseButtonEventArgs e) {
-			if (players[currentPlayer].pieces.Count() != 0) {
+			if (players[currentPlayer].pieces.Count() - players[currentPlayer].onBoardPieces != 0) {
 				players[currentPlayer].placementGrid.Visibility = System.Windows.Visibility.Visible;
 			}
 
@@ -137,9 +141,11 @@ namespace Game_of_Generals {
     public class Player {
         public ObservableCollection<Piece> pieces = new ObservableCollection<Piece>();
 		public Grid placementGrid;
+		public int onBoardPieces;
 
         public Player(Grid pGrid) {
 			placementGrid = pGrid;
+			onBoardPieces = 0;
             //TODO: Ask rule engine how many different pieces
             for(int i = 0; i <= 14; ++i) {
 				for(int j = 1; j > 0; --j) {
@@ -171,6 +177,7 @@ namespace Game_of_Generals {
 			if (onBoard) {
 				//Piece is on board, init moving
 			} else {
+				Position = new int[2] { MainWindow.placementColumn, MainWindow.placementRow };
 				//piece is not on board, init placement
 			}
         }
