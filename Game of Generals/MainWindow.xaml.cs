@@ -20,16 +20,16 @@ namespace Game_of_Generals {
     /// </summary>
     public partial class MainWindow : Window {
 
-		private Player player1, player2;
+		private Player[] players = {new Player(new Grid()), new Player(new Grid())};
 		private int currentPlayer;
 		private int rows, columns;
 		private int placementColumn, placementRow;
         public MainWindow() {
             InitializeComponent();
-            DataContext = this;
-			player1 = new Player();
-			player2 = new Player();
-			currentPlayer = 1;
+			DataContext = this;
+			players[0].placementGrid = pnlP1PiecesGrid;
+			players[1].placementGrid = pnlP2PiecesGrid;
+			currentPlayer = 0;
 			rows = 8;
 			columns = 9;
             paintGrid();
@@ -95,18 +95,8 @@ namespace Game_of_Generals {
 		private void populatePlacement() {
 			int i = 0;
 			int j = 0;
-			foreach (Piece piece in player1.pieces) {
-				piece.Parent = pnlP1PiecesGrid;
-				piece.Position = new int[2] { i, j };
-				i = (i + 1) % columns;
-				if (i == 0) {
-					++j;
-				}
-			}
-			i = 0;
-			j = 0;
-			foreach (Piece piece in player2.pieces) {
-				piece.Parent = pnlP2PiecesGrid;
+			foreach (Piece piece in players[currentPlayer].pieces) {
+				piece.Parent = players[currentPlayer].placementGrid;
 				piece.Position = new int[2] { i, j };
 				i = (i + 1) % columns;
 				if (i == 0) {
@@ -124,10 +114,8 @@ namespace Game_of_Generals {
 		}
 
 		void rect_MouseUp(object sender, MouseButtonEventArgs e) {
-			if (currentPlayer == 1 && player1.pieces.Count() != 0) {
-				pnlP1PiecesGrid.Visibility = System.Windows.Visibility.Visible;
-			} else if(currentPlayer == 2 && player2.pieces.Count() != 0) {
-				pnlP2PiecesGrid.Visibility = System.Windows.Visibility.Visible;
+			if (players[currentPlayer].pieces.Count() != 0) {
+				players[currentPlayer].placementGrid.Visibility = System.Windows.Visibility.Visible;
 			}
 
 			Rectangle rect = sender as Rectangle;
@@ -148,8 +136,10 @@ namespace Game_of_Generals {
 
     public class Player {
         public ObservableCollection<Piece> pieces = new ObservableCollection<Piece>();
+		public Grid placementGrid;
 
-        public Player() {
+        public Player(Grid pGrid) {
+			placementGrid = pGrid;
             //TODO: Ask rule engine how many different pieces
             for(int i = 0; i <= 14; ++i) {
 				for(int j = 1; j > 0; --j) {
