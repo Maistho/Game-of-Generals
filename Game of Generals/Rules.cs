@@ -65,12 +65,14 @@ namespace Game_of_Generals {
                 if (p1.getRank() == 0) {
                     return 3; //Both are flags
                 } else {
-                    return 0; //Equal
+                    return 0; //Equal non-flags
                 }
             } else if (diff < 0) {
                 if (p2.getRank() == 14) {
                     if (p1.getRank() == 1) {
                         return 1;
+                    } else if (p1.getRank() == 0) {
+                        return 5; //P1 flag captured
                     }
                 }
                 return 2;
@@ -78,6 +80,8 @@ namespace Game_of_Generals {
                 if (p1.getRank() == 14) {
                     if (p2.getRank() == 1) {
                         return 2;
+                    } else if (p2.getRank() == 0) {
+                        return 4; //P2 flag captured
                     }
                 }
                 return 1;
