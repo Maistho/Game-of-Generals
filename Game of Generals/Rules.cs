@@ -9,6 +9,7 @@ namespace Game_of_Generals {
 	class Rules {
 
         private static int turn = 0;
+		private static bool P1Winning, P2Winning = false;
 
         public static void nextTurn() {
             ++turn;
@@ -81,22 +82,22 @@ namespace Game_of_Generals {
 
 		}
 
-		public static int victoryCheck(Piece flagP1, Piece flagp2) {
+		public static int victoryCheck(Piece flagP1, Piece flagP2) {
 			if (flagP1.dead) {
 				return 2;
 			} else if(flagP2.dead) {
 				return 1;
 			} else if (flagP1.row == 0) {
-				if (P1winning == true) {
+				if (P1Winning == true) {
 					return 1;
 				} else {
-					P1winning = true;
+					P1Winning = true;
 				}
-			} else if (flagp2.row == MAX_ROWS) {
-				if (P2winning == true) {
+			} else if (flagp2.row == 7) {
+				if (P2Winning == true) {
 					return 1;
 				} else {
-					P2winning = true;
+					P2Winning = true;
 				}
 			}
 			return 0;

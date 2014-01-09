@@ -31,6 +31,7 @@ namespace Game_of_Generals {
 		public static int placementColumn, placementRow;
 		public static bool moved;
 		public static ObservableCollection<Piece> deadPieces = new ObservableCollection<Piece>();
+		public static Piece flag0, flag1;
 		public MainWindow() {
 			InitializeComponent();
 			DataContext = this;
@@ -142,6 +143,10 @@ namespace Game_of_Generals {
 
 		private void finishButton_Click(object sender, RoutedEventArgs e) {
 			Button btn = sender as Button;
+			int vic = Rules.victoryCheck(flag0, flag1);
+			if ( vic > 0) {
+				MessageBox.Show("Player " + vic.ToString() + " has won!");
+			}
 			if (switchRectangle.Visibility == Visibility.Visible) {
 				foreach (Piece piece in players[currentPlayer].pieces) {
 					if (piece.OnBoard) piece.flip(true);
@@ -175,7 +180,13 @@ namespace Game_of_Generals {
 			for (int i = 0; i <= numRanks; ++i) {
 				int numPieces = Rules.numberOfPieces(i);
 				for (int j = 0; j < numPieces; ++j) {
-					pieces.Add(new Piece(i, player));
+					Piece piece = new Piece(i, player);
+					if(i == 0 && player == 0){
+						MainWindow.flag0 = piece;
+					} else if(i == 0 && player == 1){
+						MainWindow.flag1 = piece;
+					}
+					pieces.Add(piece);
 				}
 			}
 		}
@@ -188,7 +199,7 @@ namespace Game_of_Generals {
 		private int player;
 		private BitmapImage blank;
 		private BitmapImage face;
-
+		public bool dead = false;
 
 		public Piece(int r, int p) {
 			rank = r;
@@ -212,16 +223,17 @@ namespace Game_of_Generals {
                         Grid dead = new Grid();
                         switch (Rules.stronger(this, MainWindow.movedPiece)) {
                             case 0:
-								MainWindow.deadPieces.Add(this);
+								this.dead = true;
                                 this.Parent = dead;
-								MainWindow.deadPieces.Add(MainWindow.movedPiece);
+								MainWindow.movedPiece.dead = true;
                                 MainWindow.movedPiece.Parent = dead;
                                 break;
                             case 1:
+								MainWindow.movedPiece.dead = true;
                                 MainWindow.movedPiece.Parent = dead;
                                 break;
                             case 2:
-								MainWindow.deadPieces.Add(this);
+								this.dead = true;
                                 this.Parent = dead;
                                 break;
                             default:
