@@ -123,7 +123,20 @@ namespace Game_of_Generals {
         }
 
 		private void finishButton_Click(object sender, RoutedEventArgs e) {
-			switchRectangle.Visibility = Visibility.Visible;
+			Button btn = sender as Button;
+			if (switchRectangle.Visibility == Visibility.Visible) {
+				switchRectangle.Visibility = Visibility.Hidden;
+				btn.Content = "Finish Turn";
+			} else {
+				switchRectangle.Visibility = Visibility.Visible;
+				foreach (Piece piece in players[currentPlayer].pieces) {
+					piece.flip();
+				}
+				players[currentPlayer].placementGrid.Visibility = Visibility.Hidden;
+				btn.Content = "Begin Turn";
+				currentPlayer = (currentPlayer + 1) % 2;
+			}
+			
         }
     }
 
