@@ -96,7 +96,7 @@ namespace Game_of_Generals {
 			int i = 0;
 			int j = 0;
 			foreach (Piece piece in player1.pieces) {
-				piece.setParent(pnlP1PiecesGrid);
+				piece.Parent = pnlP1PiecesGrid;
 				piece.Position = new int[2] { i, j };
 				i = (i + 1) % columns;
 				if (i == 0) {
@@ -106,7 +106,7 @@ namespace Game_of_Generals {
 			i = 0;
 			j = 0;
 			foreach (Piece piece in player2.pieces) {
-				piece.setParent(pnlP2PiecesGrid);
+				piece.Parent = pnlP2PiecesGrid;
 				piece.Position = new int[2] { i, j };
 				i = (i + 1) % columns;
 				if (i == 0) {
@@ -185,10 +185,6 @@ namespace Game_of_Generals {
 			}
         }
 
-		public void setParent(Grid parent){
-			parent.Children.Add(img);
-		}
-
         public int getRank() {
             return rank;
 		}
@@ -217,7 +213,6 @@ namespace Game_of_Generals {
         }
         
         public Grid Parent {
-            get;
             set {
                 value.Children.Add(img);
             }
