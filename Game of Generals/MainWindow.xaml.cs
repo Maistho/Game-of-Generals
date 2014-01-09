@@ -29,6 +29,7 @@ namespace Game_of_Generals {
 		public static bool moving;
 		public static Piece movedPiece;
 		public static int placementColumn, placementRow;
+		public static bool moved;
 		public MainWindow() {
 			InitializeComponent();
 			DataContext = this;
@@ -112,6 +113,7 @@ namespace Game_of_Generals {
 				if (Rules.legalMove(movedPiece, newMove)) {
 					movedPiece.Position = newMove;
 				}
+				moved = true;
 				moving = false;
 			} else {
 				if (lastRect != null) lastRect.Fill = Brushes.Black;
@@ -140,6 +142,7 @@ namespace Game_of_Generals {
 				foreach (Piece piece in players[currentPlayer].pieces) {
 					if (piece.OnBoard) piece.flip(true);
 				}
+				moved = false;
 				switchRectangle.Visibility = Visibility.Hidden;
 				btn.Content = "Finish Turn";
 			} else {
@@ -200,6 +203,7 @@ namespace Game_of_Generals {
 				if (MainWindow.moving) {
 					if (player != MainWindow.movedPiece.getPlayer()) {
 						MainWindow.movedPiece.Position = this.Position;
+
                         Grid dead = new Grid();
                         switch (Rules.stronger(this, MainWindow.movedPiece)) {
                             case 0:
@@ -229,9 +233,10 @@ namespace Game_of_Generals {
                         }
 						//TODO: Ask rules engine which piece to remove
 					}
+					MainWindow.moved = true;
 					MainWindow.moving = false;
 					MainWindow.movedPiece = null;
-				} else if (player == MainWindow.CurrentPlayer) {
+				} else if (!MainWindow.moved && player == MainWindow.CurrentPlayer) {
 					//TODO: Ask rules engine about legal destinations
 					//Highlight destinations
 					MainWindow.moving = true;
