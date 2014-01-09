@@ -15,10 +15,10 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Game_of_Generals {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window {
+	/// <summary>
+	/// Interaction logic for MainWindow.xaml
+	/// </summary>
+	public partial class MainWindow : Window {
 
 		public static Player[] players = { new Player(new Grid(), 0), new Player(new Grid(), 1) };
 		private static int currentPlayer;
@@ -26,32 +26,32 @@ namespace Game_of_Generals {
 		private Rectangle lastRect;
         public static bool gameEnd;
         public static int winner;
-        public static bool moving;
-        public static Piece movedPiece;
+		public static bool moving;
+		public static Piece movedPiece;
 		public static int placementColumn, placementRow;
-        public MainWindow() {
-            InitializeComponent();
+		public MainWindow() {
+			InitializeComponent();
 			DataContext = this;
 			players[0].placementGrid = pnlP1PiecesGrid;
 			players[1].placementGrid = pnlP2PiecesGrid;
 			currentPlayer = 0;
 			rows = 8;
 			columns = 9;
-            paintGrid();
+			paintGrid();
 			populatePlacement(0);
 			populatePlacement(1);
-        }
+		}
 
-        public static int CurrentPlayer {
+		public static int CurrentPlayer {
 			get { return currentPlayer; }
-        }
+		}
 
-        private void paintGrid() {
+		private void paintGrid() {
 
 			//Add grid definitions to the boardGrid
-            for (int i = rows; i > 0; --i) {
-                RowDefinition row = new RowDefinition();
-                row.Height = new GridLength(1, GridUnitType.Star);
+			for (int i = rows; i > 0; --i) {
+				RowDefinition row = new RowDefinition();
+				row.Height = new GridLength(1, GridUnitType.Star);
 				pnlBoardGrid.RowDefinitions.Add(row);
 			} for (int i = columns; i > 0; --i) {
 				ColumnDefinition column = new ColumnDefinition();
@@ -79,18 +79,18 @@ namespace Game_of_Generals {
 			}
 
 			//Fill the grid with rectangles
-            for (int i = pnlBoardGrid.RowDefinitions.Count(); i >= 0; --i) {
-                for (int j = pnlBoardGrid.ColumnDefinitions.Count(); j >= 0; --j) {
-                    Rectangle rect = new Rectangle();
-                    rect.Fill = Brushes.Black;
-                    pnlBoardGrid.Children.Add(rect);
-                    Grid.SetColumn(rect, j);
-                    Grid.SetRow(rect, i);
+			for (int i = pnlBoardGrid.RowDefinitions.Count(); i >= 0; --i) {
+				for (int j = pnlBoardGrid.ColumnDefinitions.Count(); j >= 0; --j) {
+					Rectangle rect = new Rectangle();
+					rect.Fill = Brushes.Black;
+					pnlBoardGrid.Children.Add(rect);
+					Grid.SetColumn(rect, j);
+					Grid.SetRow(rect, i);
 					rect.Stroke = Brushes.Green;
 					rect.MouseUp += rect_MouseUp;
-                }
-            }
-        }
+				}
+			}
+		}
 
 		private void populatePlacement(int player) {
 			int i = 0;
@@ -107,28 +107,28 @@ namespace Game_of_Generals {
 
 		void rect_MouseUp(object sender, MouseButtonEventArgs e) {
 			Rectangle rect = sender as Rectangle;
-            if (moving) {
+			if (moving) {
 				int[] newMove = new int[2] { Grid.GetColumn(rect), Grid.GetRow(rect) };
 				if (Rules.legalMove(movedPiece, newMove)) {
 					movedPiece.Position = newMove;
 				}
-                moving = false;
-            } else {
-                if (lastRect != null) lastRect.Fill = Brushes.Black;
-			if (players[currentPlayer].pieces.Count() - players[currentPlayer].onBoardPieces != 0) {
-				players[currentPlayer].placementGrid.Visibility = System.Windows.Visibility.Visible;
-
-				if (Grid.GetColumn(rect) >= 0 && Grid.GetRow(rect) >= 0) { //TODO: Kittens
-					placementColumn = Grid.GetColumn(rect);
-					placementRow = Grid.GetRow(rect);
-				rect.Fill = Brushes.LightGreen;
-				}
-				lastRect = rect;
+				moving = false;
 			} else {
-				players[currentPlayer].placementGrid.Visibility = System.Windows.Visibility.Hidden;
+				if (lastRect != null) lastRect.Fill = Brushes.Black;
+				if (players[currentPlayer].pieces.Count() - players[currentPlayer].onBoardPieces != 0) {
+					players[currentPlayer].placementGrid.Visibility = System.Windows.Visibility.Visible;
+
+					if (Grid.GetColumn(rect) >= 0 && Grid.GetRow(rect) >= 0) {
+						placementColumn = Grid.GetColumn(rect);
+						placementRow = Grid.GetRow(rect);
+						rect.Fill = Brushes.LightGreen;
+					}
+					lastRect = rect;
+				} else {
+					players[currentPlayer].placementGrid.Visibility = System.Windows.Visibility.Hidden;
+				}
 			}
 		}
-        }
 
 		private void finishButton_Click(object sender, RoutedEventArgs e) {
 			Button btn = sender as Button;
@@ -147,16 +147,16 @@ namespace Game_of_Generals {
 				btn.Content = "Begin Turn";
 				currentPlayer = (currentPlayer + 1) % 2;
 			}
-			
-        }
-    }
 
-    public class Player {
-        public ObservableCollection<Piece> pieces = new ObservableCollection<Piece>();
+		}
+	}
+
+	public class Player {
+		public ObservableCollection<Piece> pieces = new ObservableCollection<Piece>();
 		public Grid placementGrid;
 		public int onBoardPieces;
 
-        public Player(Grid pGrid, int player) {
+		public Player(Grid pGrid, int player) {
 			placementGrid = pGrid;
 			onBoardPieces = 0;
 			int numRanks = Rules.numberOfRanks();
@@ -165,37 +165,37 @@ namespace Game_of_Generals {
 				for (int j = 0; j < numPieces; ++j) {
 					pieces.Add(new Piece(i, player));
 				}
-            }
-        }
-    }
+			}
+		}
+	}
 
-    public class Piece {
-        private int rank;
-        private Image img;
-        private bool onBoard;
+	public class Piece {
+		private int rank;
+		private Image img;
+		private bool onBoard;
 		private int player;
-        private BitmapImage blank;
-        private BitmapImage face;
+		private BitmapImage blank;
+		private BitmapImage face;
 
 
-        public Piece(int r, int p) {
-            rank = r;
-            player = p;
-            onBoard = false;
-            img = new Image();
-            blank = new BitmapImage(new Uri("pack://application:,,,/Game of Generals;component/pieces/empty" + (player == 0 ? "" : "r") + ".png", UriKind.Absolute));
-            face = new BitmapImage(new Uri("pack://application:,,,/Game of Generals;component/pieces/" + rank.ToString() + (player == 0 ? "" : "r") + ".png", UriKind.Absolute));
-            img.Source = face;
-            img.Stretch = Stretch.Uniform;
+		public Piece(int r, int p) {
+			rank = r;
+			player = p;
+			onBoard = false;
+			img = new Image();
+			blank = new BitmapImage(new Uri("pack://application:,,,/Game of Generals;component/pieces/empty" + (player == 0 ? "" : "r") + ".png", UriKind.Absolute));
+			face = new BitmapImage(new Uri("pack://application:,,,/Game of Generals;component/pieces/" + rank.ToString() + (player == 0 ? "" : "r") + ".png", UriKind.Absolute));
+			img.Source = face;
+			img.Stretch = Stretch.Uniform;
 			img.MouseUp += img_MouseUp;
-        }
+		}
 
 		void img_MouseUp(object sender, MouseButtonEventArgs e) {
 			if (onBoard) {
 				//Piece is on board, init moving
-                if (MainWindow.moving) {
-                    if (player != MainWindow.movedPiece.getPlayer()) {
-                        MainWindow.movedPiece.Position = this.Position;
+				if (MainWindow.moving) {
+					if (player != MainWindow.movedPiece.getPlayer()) {
+						MainWindow.movedPiece.Position = this.Position;
                         Grid dead = new Grid();
                         switch (Rules.stronger(this, MainWindow.movedPiece)) {
                             case 0:
@@ -223,22 +223,22 @@ namespace Game_of_Generals {
                             default:
                                 break;
                         }
-                        //TODO: Ask rules engine which piece to remove
-                    }
-                    MainWindow.moving = false;
-                    MainWindow.movedPiece = null;
-                } else if (player == MainWindow.CurrentPlayer) {
-                    //TODO: Ask rules engine about legal destinations
-                    //Highlight destinations
-                    MainWindow.moving = true;
-                    MainWindow.movedPiece = this;
-                }
+						//TODO: Ask rules engine which piece to remove
+					}
+					MainWindow.moving = false;
+					MainWindow.movedPiece = null;
+				} else if (player == MainWindow.CurrentPlayer) {
+					//TODO: Ask rules engine about legal destinations
+					//Highlight destinations
+					MainWindow.moving = true;
+					MainWindow.movedPiece = this;
+				}
 			} else {
 				if (MainWindow.placementColumn != -1 && MainWindow.placementRow != -1) {
-				Position = new int[2] { MainWindow.placementColumn, MainWindow.placementRow };
-				onBoard = true;
-				Parent = (Grid)Application.Current.MainWindow.FindName("pnlBoardGrid");
-				MainWindow.players[player].onBoardPieces += 1;
+					Position = new int[2] { MainWindow.placementColumn, MainWindow.placementRow };
+					onBoard = true;
+					Parent = (Grid)Application.Current.MainWindow.FindName("pnlBoardGrid");
+					MainWindow.players[player].onBoardPieces += 1;
 					MainWindow.placementColumn = -1;
 					MainWindow.placementRow = -1;
 				}
@@ -246,54 +246,54 @@ namespace Game_of_Generals {
 				//Set color to black on rect
 				//piece is not on board, finish placement
 			}
-        }
-
-        public int getRank() {
-            return rank;
 		}
 
-        public int getPlayer() {
-            return player;
-        }
+		public int getRank() {
+			return rank;
+		}
 
-        public void flip(bool faceup) {
-            if (!faceup) {
-                img.Source = blank;
-                faceup = false;
-            } else {
-                img.Source = face;
-                faceup = true;
-            }
-        }
+		public int getPlayer() {
+			return player;
+		}
+
+		public void flip(bool faceup) {
+			if (!faceup) {
+				img.Source = blank;
+				faceup = false;
+			} else {
+				img.Source = face;
+				faceup = true;
+			}
+		}
 
 
-        public bool OnBoard {
-            get {
-                return onBoard;
-            }
-            set {
-                onBoard = value;
-            }
-        }
-        public int[] Position {
-            get {
-                return new int[2] { Grid.GetColumn(img), Grid.GetRow(img) };
-            }
-            set {
-                Grid.SetColumn(img, value[0]);
-                Grid.SetRow(img, value[1]);
-            }
-        }
-        
-        public Grid Parent {
-            set {
-                Grid grid = this.img.Parent as Grid;
+		public bool OnBoard {
+			get {
+				return onBoard;
+			}
+			set {
+				onBoard = value;
+			}
+		}
+		public int[] Position {
+			get {
+				return new int[2] { Grid.GetColumn(img), Grid.GetRow(img) };
+			}
+			set {
+				Grid.SetColumn(img, value[0]);
+				Grid.SetRow(img, value[1]);
+			}
+		}
+
+		public Grid Parent {
+			set {
+				Grid grid = this.img.Parent as Grid;
 				if (grid != null) {
-                grid.Children.Remove(this.img);
+					grid.Children.Remove(this.img);
 				}
-                value.Children.Add(img);
-            }
-        }
+				value.Children.Add(img);
+			}
+		}
 
-    }
+	}
 }
