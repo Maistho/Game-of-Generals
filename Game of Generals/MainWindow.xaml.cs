@@ -24,6 +24,8 @@ namespace Game_of_Generals {
 		private static int currentPlayer;
 		private int rows, columns;
 		private Rectangle lastRect;
+        public static bool gameEnd;
+        public static int winner;
         public static bool moving;
         public static Piece movedPiece;
 		public static int placementColumn, placementRow;
@@ -192,6 +194,25 @@ namespace Game_of_Generals {
                 if (MainWindow.moving) {
                     if (player != MainWindow.movedPiece.getPlayer()) {
                         MainWindow.movedPiece.Position = this.Position;
+                        Grid dead = new Grid();
+                        switch (Rules.stronger(this, MainWindow.movedPiece)) {
+                            case 0:
+                                this.Parent = dead;
+                                MainWindow.movedPiece.Parent = dead;
+                                break;
+                            case 1:
+                                MainWindow.movedPiece.Parent = dead;
+                                break;
+                            case 2:
+                                this.Parent = dead;
+                                break;
+                            case 3:
+                                MainWindow.gameEnd = true;
+                                MainWindow.winner = this.getPlayer();
+                                break;
+                            default:
+                                break;
+                        }
                         //TODO: Ask rules engine which piece to remove
                     }
                     MainWindow.moving = false;
