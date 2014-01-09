@@ -20,7 +20,7 @@ namespace Game_of_Generals {
     /// </summary>
     public partial class MainWindow : Window {
 
-		private Player[] players = {new Player(new Grid()), new Player(new Grid())};
+		private Player[] players = {new Player(new Grid(),true), new Player(new Grid(),false)};
 		private int currentPlayer;
 		private int rows, columns;
 		public int placementColumn;
@@ -143,14 +143,14 @@ namespace Game_of_Generals {
 		public Grid placementGrid;
 		public int onBoardPieces;
 
-        public Player(Grid pGrid) {
+        public Player(Grid pGrid, bool colour) {
 			placementGrid = pGrid;
 			onBoardPieces = 0;
             //TODO: Ask rule engine how many different pieces
             for(int i = 0; i <= 14; ++i) {
 				for(int j = 1; j > 0; --j) {
 					//TODO: Ask rule engine how many pieces of current rank to add
-					pieces.Add(new Piece(i, true));
+					pieces.Add(new Piece(i, colour));
 				}
             }
         }
