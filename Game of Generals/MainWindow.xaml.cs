@@ -168,10 +168,16 @@ namespace Game_of_Generals {
                 //TODO: Ask rules engine about legal destinations
                 //Highlight destinations
                 if (MainWindow.moving) {
-                    
+                    if (player != MainWindow.movedPiece.getPlayer()) {
+                        MainWindow.movedPiece.Position = this.Position;
+                        //TODO: Ask rules engine which piece to remove
+                    }
+                    MainWindow.moving = false;
+                    MainWindow.movedPiece = null;
+                } else {
+                    MainWindow.moving = true;
+                    MainWindow.movedPiece = this;
                 }
-                MainWindow.moving = true;
-                MainWindow.movedPiece = this;
 			} else {
 				if (MainWindow.placementColumn != -1 && MainWindow.placementRow != -1) {
 				Position = new int[2] { MainWindow.placementColumn, MainWindow.placementRow };
