@@ -165,8 +165,6 @@ namespace Game_of_Generals {
 		void img_MouseUp(object sender, MouseButtonEventArgs e) {
 			if (onBoard) {
 				//Piece is on board, init moving
-                //TODO: Ask rules engine about legal destinations
-                //Highlight destinations
                 if (MainWindow.moving) {
                     if (player != MainWindow.movedPiece.getPlayer()) {
                         MainWindow.movedPiece.Position = this.Position;
@@ -175,6 +173,8 @@ namespace Game_of_Generals {
                     MainWindow.moving = false;
                     MainWindow.movedPiece = null;
                 } else {
+                    //TODO: Ask rules engine about legal destinations
+                    //Highlight destinations
                     MainWindow.moving = true;
                     MainWindow.movedPiece = this;
                 }
