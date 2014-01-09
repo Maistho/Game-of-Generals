@@ -165,7 +165,6 @@ namespace Game_of_Generals {
 		private int player;
         private BitmapImage blank;
         private BitmapImage face;
-        private bool faceup = true;
 
 
         public Piece(int r, int p) {
@@ -219,7 +218,7 @@ namespace Game_of_Generals {
             return player;
         }
 
-        public void flip() {
+        public void flip(bool faceup) {
             if (faceup) {
                 img.Source = blank;
                 faceup = false;
