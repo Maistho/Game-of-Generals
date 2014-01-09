@@ -212,6 +212,14 @@ namespace Game_of_Generals {
                                 MainWindow.gameEnd = true;
                                 MainWindow.winner = this.getPlayer();
                                 break;
+                            case 4:
+                                MainWindow.gameEnd = true;
+                                MainWindow.winner = this.getPlayer();
+                                break;
+                            case 5:
+                                MainWindow.gameEnd = true;
+                                MainWindow.winner = MainWindow.movedPiece.getPlayer();
+                                break;
                             default:
                                 break;
                         }
