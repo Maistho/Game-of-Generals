@@ -118,15 +118,18 @@ namespace Game_of_Generals {
 			Rectangle rect = sender as Rectangle;
 			if (players[currentPlayer].pieces.Count() - players[currentPlayer].onBoardPieces != 0) {
 				players[currentPlayer].placementGrid.Visibility = System.Windows.Visibility.Visible;
-				rect.Fill = Brushes.LightGreen;
+
+				if (Grid.GetColumn(rect) >= 0 && Grid.GetRow(rect) >= 0) { //TODO: Kittens
+					placementColumn = Grid.GetColumn(rect);
+					placementRow = Grid.GetRow(rect);
+					rect.Fill = Brushes.LightGreen;
+				}
+				lastRect = rect;
 			} else {
 				players[currentPlayer].placementGrid.Visibility = System.Windows.Visibility.Hidden;
 			}
-			lastRect = rect;
-			placementColumn = Grid.GetColumn(rect);
-			placementRow = Grid.GetRow(rect);
 		}
-        }
+	}
 
     public class Player {
         public ObservableCollection<Piece> pieces = new ObservableCollection<Piece>();
@@ -171,12 +174,14 @@ namespace Game_of_Generals {
                 //TODO: Ask rules engine about legal destinations
                 //Highlight destinations, wait for click.
 			} else {
-				Position = new int[2] { MainWindow.placementColumn, MainWindow.placementRow };
-				onBoard = true;
-				Parent = (Grid)Application.Current.MainWindow.FindName("pnlBoardGrid");
-				player.onBoardPieces += 1;
-				MainWindow.placementColumn = 0;
-				MainWindow.placementRow = 0;
+				if (MainWindow.placementColumn != -1 && MainWindow.placementRow != -1) {
+					Position = new int[2] { MainWindow.placementColumn, MainWindow.placementRow };
+					onBoard = true;
+					Parent = (Grid)Application.Current.MainWindow.FindName("pnlBoardGrid");
+					player.onBoardPieces += 1;
+					MainWindow.placementColumn = -1;
+					MainWindow.placementRow = -1;
+				}
 
 				//Set color to black on rect
 				//piece is not on board, finish placement
