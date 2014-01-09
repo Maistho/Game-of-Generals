@@ -113,8 +113,8 @@ namespace Game_of_Generals {
 				int[] newMove = new int[2] { Grid.GetColumn(rect), Grid.GetRow(rect) };
 				if (Rules.legalMove(movedPiece, newMove)) {
 					movedPiece.Position = newMove;
+					moved = true;
 				}
-				moved = true;
 				moving = false;
 			} else {
 				if (lastRect != null) lastRect.Fill = Brushes.Black;

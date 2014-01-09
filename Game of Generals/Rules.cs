@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,6 +58,27 @@ namespace Game_of_Generals {
 					return 1;
 			}
 
+		}
+
+		public static int victoryCheck(Piece flagP1, Piece flagp2) {
+			if (flagP1.dead) {
+				return 2;
+			} else if(flagP2.dead) {
+				return 1;
+			} else if (flagP1.row == 0) {
+				if (P1winning == true) {
+					return 1;
+				} else {
+					P1winning = true;
+				}
+			} else if (flagp2.row == MAX_ROWS) {
+				if (P2winning == true) {
+					return 1;
+				} else {
+					P2winning = true;
+				}
+			}
+			return 0;
 		}
 
 		public static int stronger(Piece p1, Piece p2) {
