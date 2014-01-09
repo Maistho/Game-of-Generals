@@ -126,13 +126,38 @@ namespace Game_of_Generals {
 
     public class Piece {
         private int rank;
+        private bool colour; //True is green
+        private Image img;
 
-        public Piece(int r) {
+        public Piece(int r, bool c) {
             rank = r;
+            colour = c;
+            img = new Image();
+            BitmapImage src = new BitmapImage();
+            src.BeginInit();
+            src.UriSource = new Uri("pack://application:,,,/Game of Generals;component/pieces/" + rank.ToString() + colour ? "" : "r" + ".png", UriKind.Absolute);
+            src.EndInit();
+            img.Source = src;
+            img.Stretch = Stretch.Uniform;
         }
 
         public int getRank() {
             return rank;
         }
+
+        public bool getColour() {
+            return colour;
+        }
+
+        public int[] Position {
+            get {
+                return new int[2] { Grid.GetColumn(img), Grid.GetRow(img) };
+            }
+            set {
+                Grid.SetColumn(img, value[0]);
+                Grid.SetRow(img, value[1]);
+            }
+        }
+
     }
 }
