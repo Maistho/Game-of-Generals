@@ -122,7 +122,7 @@ namespace Game_of_Generals {
 		}
         }
 
-		private void finishButton_MouseUp(object sender, MouseButtonEventArgs e) {
+		private void finishButton_Click(object sender, RoutedEventArgs e) {
 			switchRectangle.Visibility = Visibility.Visible;
         }
     }
