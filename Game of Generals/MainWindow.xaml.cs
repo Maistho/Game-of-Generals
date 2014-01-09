@@ -211,6 +211,9 @@ namespace Game_of_Generals {
         
         public Grid Parent {
             set {
+                Grid grid = this.img.Parent as Grid;
+                grid.Children.Remove(this.img);
+                Parent = (Grid)Application.Current.MainWindow.FindName("pnlBoardGrid");
                 value.Children.Add(img);
             }
         }
