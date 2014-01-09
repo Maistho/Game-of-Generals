@@ -21,7 +21,7 @@ namespace Game_of_Generals {
     public partial class MainWindow : Window {
 
 		public static Player[] players = {new Player(new Grid(),0), new Player(new Grid(),1)};
-		private int currentPlayer;
+		private static int currentPlayer;
 		private int rows, columns;
 		private Rectangle lastRect;
         public static bool moving;
@@ -38,6 +38,10 @@ namespace Game_of_Generals {
             paintGrid();
 			populatePlacement(0);
 			populatePlacement(1);
+        }
+
+        public static int CurrentPlayer {
+            get { return currentPlayer;}
         }
 
         private void paintGrid() {
@@ -192,7 +196,7 @@ namespace Game_of_Generals {
                     }
                     MainWindow.moving = false;
                     MainWindow.movedPiece = null;
-                } else {
+                } else if (player == MainWindow.CurrentPlayer) {
                     //TODO: Ask rules engine about legal destinations
                     //Highlight destinations
                     MainWindow.moving = true;
