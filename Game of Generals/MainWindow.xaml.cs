@@ -30,7 +30,7 @@ namespace Game_of_Generals {
 			DataContext = this;
 			players[0].placementGrid = pnlP1PiecesGrid;
 			players[1].placementGrid = pnlP2PiecesGrid;
-			currentPlayer = 0;
+            currentPlayer = 1;
 			rows = 8;
 			columns = 9;
             paintGrid();
@@ -177,7 +177,7 @@ namespace Game_of_Generals {
 			if (onBoard) {
 				//Piece is on board, init moving
 			} else {
-				Position = new int[2] { MainWindow.placementColumn, MainWindow.placementRow };
+//				Position = new int[2] { MainWindow.placementColumn, MainWindow.placementRow };
 				//piece is not on board, init placement
 			}
         }
