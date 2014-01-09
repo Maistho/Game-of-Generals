@@ -92,6 +92,26 @@ namespace Game_of_Generals {
         }
 
 		private void populatePlacement() {
+			int i = 0;
+			int j = 0;
+			foreach (Piece piece in player1.pieces) {
+				piece.setParent(pnlP1PiecesGrid);
+				piece.Position = new int[2] { i, j };
+				i = (i + 1) % columns;
+				if (i == 0) {
+					++j;
+				}
+			}
+			i = 0;
+			j = 0;
+			foreach (Piece piece in player2.pieces) {
+				piece.setParent(pnlP2PiecesGrid);
+				piece.Position = new int[2] { i, j };
+				i = (i + 1) % columns;
+				if (i == 0) {
+					++j;
+				}
+			}
 		}
 
 		void img_MouseUp(object sender, MouseButtonEventArgs e) {
@@ -157,10 +177,16 @@ namespace Game_of_Generals {
         }
 
 		void img_MouseUp(object sender, MouseButtonEventArgs e) {
-			Grid img = sender as Grid;
-			int column = Grid.GetColumn(img);
-			int row = Grid.GetRow(img);
+			if (onBoard) {
+				//Piece is on board, init moving
+			} else {
+				//piece is not on board, init placement
+			}
         }
+
+		public void setParent(Grid parent){
+			parent.Children.Add(img);
+		}
 
         public int getRank() {
             return rank;
