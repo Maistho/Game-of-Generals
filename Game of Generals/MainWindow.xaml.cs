@@ -23,6 +23,7 @@ namespace Game_of_Generals {
 		private Player player1, player2;
 		private int currentPlayer;
 		private int rows, columns;
+		private int placementColumn, placementRow;
         public MainWindow() {
             InitializeComponent();
 			player1 = new Player();
@@ -34,6 +35,8 @@ namespace Game_of_Generals {
         }
 
         private void paintGrid() {
+
+			//Add grid definitions to the boardGrid
             for (int i = rows; i > 0; --i) {
                 RowDefinition row = new RowDefinition();
                 row.Height = new GridLength(1, GridUnitType.Star);
@@ -44,6 +47,7 @@ namespace Game_of_Generals {
 				pnlBoardGrid.ColumnDefinitions.Add(column);
 			}
 
+			//Add grid definitions to the player placementGrids
 			for (int i = rows / 2; i > 0; --i) {
 				RowDefinition row = new RowDefinition();
 				row.Height = new GridLength(1, GridUnitType.Star);
@@ -62,6 +66,7 @@ namespace Game_of_Generals {
 				pnlP2PiecesGrid.ColumnDefinitions.Add(column);
 			}
 
+			//Fill the grid with rectangles
             for (int i = pnlBoardGrid.RowDefinitions.Count(); i >= 0; --i) {
                 for (int j = pnlBoardGrid.ColumnDefinitions.Count(); j >= 0; --j) {
                     Rectangle rect = new Rectangle();
@@ -85,18 +90,26 @@ namespace Game_of_Generals {
 			pnlBoardGrid.Children.Add(img);
 			Grid.SetColumn(img, 1);
 			Grid.SetRow(img, 2);
+			img.MouseUp += img_MouseUp;
 
         }
+
+		void img_MouseUp(object sender, MouseButtonEventArgs e) {
+			Image img = sender as Image;
+			//Do stuff like moving the image
+
+		}
 
 		void rect_MouseUp(object sender, MouseButtonEventArgs e) {
 			if (currentPlayer == 1 && player1.pieces.Count() != 0) {
 				pnlP1PiecesGrid.Visibility = System.Windows.Visibility.Visible;
-
-				//Select piece and place it
 			} else if(currentPlayer == 2 && player2.pieces.Count() != 0) {
 				pnlP2PiecesGrid.Visibility = System.Windows.Visibility.Visible;
-				//Select piece and place it
 			}
+
+			Rectangle rect = sender as Rectangle;
+			placementColumn = Grid.GetColumn(rect);
+			placementRow = Grid.GetRow(rect);
 		}
 
         void rect_MouseLeave(object sender, MouseEventArgs e) {
