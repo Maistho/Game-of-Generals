@@ -118,10 +118,14 @@ namespace Game_of_Generals {
 				if (players[currentPlayer].pieces.Count() - players[currentPlayer].onBoardPieces != 0) {
 					players[currentPlayer].placementGrid.Visibility = System.Windows.Visibility.Visible;
 
-					if (Grid.GetColumn(rect) >= 0 && Grid.GetRow(rect) >= 0) {
+					if (Rules.legalPlacement(currentPlayer, Grid.GetRow(rect))) {
 						placementColumn = Grid.GetColumn(rect);
 						placementRow = Grid.GetRow(rect);
 						rect.Fill = Brushes.LightGreen;
+					} else {
+						placementColumn = -1;
+						placementRow = -1;
+						rect.Fill = Brushes.PaleVioletRed;
 					}
 					lastRect = rect;
 				} else {

@@ -26,6 +26,24 @@ namespace Game_of_Generals {
 			}
 		}
 
+		public static bool legalPlacement(int player, int row) {
+			if (player == 0) {
+				if (row > 4) {
+					return true;
+				} else {
+					return false;
+				}
+			} else if (player == 1) {
+				if (row < 3) {
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
+
 		public static int numberOfRanks() {
 			return 14;
 		}
