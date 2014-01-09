@@ -116,24 +116,27 @@ namespace Game_of_Generals {
 		}
 
 		void rect_MouseUp(object sender, MouseButtonEventArgs e) {
-            Rectangle rect = sender as Rectangle;
+			Rectangle rect = sender as Rectangle;
             if (moving) {
                 //TODO: Ask rules engine if move is legal
                 movedPiece.Position = new int[2] { Grid.GetColumn(rect), Grid.GetRow(rect) };
                 moving = false;
             } else {
                 if (lastRect != null) lastRect.Fill = Brushes.Black;
-                if (players[currentPlayer].pieces.Count() - players[currentPlayer].onBoardPieces != 0) {
-                    players[currentPlayer].placementGrid.Visibility = System.Windows.Visibility.Visible;
-                    rect.Fill = Brushes.LightGreen;
-                } else {
-                    players[currentPlayer].placementGrid.Visibility = System.Windows.Visibility.Hidden;
-                }
-                lastRect = rect;
-                placementColumn = Grid.GetColumn(rect);
-                placementRow = Grid.GetRow(rect);
-            }
+			if (players[currentPlayer].pieces.Count() - players[currentPlayer].onBoardPieces != 0) {
+				players[currentPlayer].placementGrid.Visibility = System.Windows.Visibility.Visible;
+
+				if (Grid.GetColumn(rect) >= 0 && Grid.GetRow(rect) >= 0) { //TODO: Kittens
+					placementColumn = Grid.GetColumn(rect);
+					placementRow = Grid.GetRow(rect);
+				rect.Fill = Brushes.LightGreen;
+				}
+				lastRect = rect;
+			} else {
+				players[currentPlayer].placementGrid.Visibility = System.Windows.Visibility.Hidden;
+			}
 		}
+        }
     }
 
     public class Player {
@@ -181,12 +184,14 @@ namespace Game_of_Generals {
                 MainWindow.moving = true;
                 MainWindow.movedPiece = this;
 			} else {
+				if (MainWindow.placementColumn != -1 && MainWindow.placementRow != -1) {
 				Position = new int[2] { MainWindow.placementColumn, MainWindow.placementRow };
 				onBoard = true;
 				Parent = (Grid)Application.Current.MainWindow.FindName("pnlBoardGrid");
 				player.onBoardPieces += 1;
-				MainWindow.placementColumn = 0;
-				MainWindow.placementRow = 0;
+					MainWindow.placementColumn = -1;
+					MainWindow.placementRow = -1;
+				}
 
 				//Set color to black on rect
 				//piece is not on board, finish placement
