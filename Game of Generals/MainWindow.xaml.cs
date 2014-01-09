@@ -23,14 +23,12 @@ namespace Game_of_Generals {
 		private Player[] players = {new Player(new Grid(),true), new Player(new Grid(),false)};
 		private int currentPlayer;
 		private int rows, columns;
-		public int placementColumn;
-		public int placementRow;
+		public static int placementColumn, placementRow;
         public MainWindow() {
             InitializeComponent();
 			DataContext = this;
 			players[0].placementGrid = pnlP1PiecesGrid;
 			players[1].placementGrid = pnlP2PiecesGrid;
-			currentPlayer = 0;
 			rows = 8;
 			columns = 9;
             paintGrid();
@@ -178,7 +176,9 @@ namespace Game_of_Generals {
 				//Piece is on board, init moving
 			} else {
 				Position = new int[2] { MainWindow.placementColumn, MainWindow.placementRow };
-				//piece is not on board, init placement
+				onBoard = true;
+				//TODO: Hide the board and change player
+				//piece is not on board, finish placement
 			}
         }
 
