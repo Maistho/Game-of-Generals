@@ -150,6 +150,9 @@ namespace Game_of_Generals {
         private Image img;
         private bool onBoard;
 		private int player;
+        private BitmapImage blank;
+        private BitmapImage face;
+        private bool faceup = true;
 
 
         public Piece(int r, int p) {
@@ -157,7 +160,9 @@ namespace Game_of_Generals {
             player = p;
             onBoard = false;
             img = new Image();
-			img.Source = new BitmapImage(new Uri("pack://application:,,,/Game of Generals;component/pieces/" + rank.ToString() + (player == 0 ? "" : "r") + ".png", UriKind.Absolute));
+            blank = new BitmapImage(new Uri("pack://application:,,,/Game of Generals;component/pieces/empty" + (player == 0 ? "" : "r") + ".png", UriKind.Absolute));
+            face = new BitmapImage(new Uri("pack://application:,,,/Game of Generals;component/pieces/" + rank.ToString() + (player == 0 ? "" : "r") + ".png", UriKind.Absolute));
+            img.Source = face;
             img.Stretch = Stretch.Uniform;
 			img.MouseUp += img_MouseUp;
         }
@@ -199,6 +204,16 @@ namespace Game_of_Generals {
 
         public int getPlayer() {
             return player;
+        }
+
+        public void flip() {
+            if (faceup) {
+                img.Source = blank;
+                faceup = false;
+            } else {
+                img.Source = face;
+                faceup = true;
+            }
         }
 
 
