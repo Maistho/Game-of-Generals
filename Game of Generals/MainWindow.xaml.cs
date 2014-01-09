@@ -144,13 +144,21 @@ namespace Game_of_Generals {
         private bool colour; //True is green
         private Image img;
 
+
         public Piece(int r, bool c) {
             rank = r;
             colour = c;
             img = new Image();
 			img.Source = new BitmapImage(new Uri("pack://application:,,,/Game of Generals;component/pieces/" + rank.ToString() + (colour ? "" : "r") + ".png", UriKind.Absolute));
             img.Stretch = Stretch.Uniform;
+			img.MouseUp += img_MouseUp;
         }
+
+		void img_MouseUp(object sender, MouseButtonEventArgs e) {
+			Grid img = sender as Grid;
+			int column = Grid.GetColumn(img);
+			int row = Grid.GetRow(img);
+		}
 
         public int getRank() {
             return rank;
