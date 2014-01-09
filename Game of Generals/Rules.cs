@@ -7,23 +7,44 @@ using System.Threading.Tasks;
 namespace Game_of_Generals {
 	class Rules {
 
-		public static bool legalMove(Piece piece, int[] newMove) {
-			if (Math.Abs(piece.Position[0] - newMove[0]) == 1) {
-				if (Math.Abs(piece.Position[1] - newMove[1]) == 0) {
-					return true;
-				} else {
-					return false;
-				}
+        private static int turn = 0;
 
-			} else if (Math.Abs(piece.Position[0] - newMove[0]) == 0) {
-				if (Math.Abs(piece.Position[1] - newMove[1]) == 1) {
-					return true;
-				} else {
-					return false;
-				}
-			} else {
-				return false;
-			}
+        public static void nextTurn() {
+            ++turn;
+        }
+
+        public static bool canPlace() {
+            return (turn < 2);
+        }
+
+        public static bool mayPass() {
+            if (turn > 1 || MainWindow.players[MainWindow.CurrentPlayer].onBoardPieces == 21) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+		public static bool legalMove(Piece piece, int[] newMove) {
+            if (turn > 1) {
+                if (Math.Abs(piece.Position[0] - newMove[0]) == 1) {
+                    if (Math.Abs(piece.Position[1] - newMove[1]) == 0) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+
+                } else if (Math.Abs(piece.Position[0] - newMove[0]) == 0) {
+                    if (Math.Abs(piece.Position[1] - newMove[1]) == 1) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+                return false;
+            } else {
+                return false;
+            }
 		}
 
 		public static bool legalPlacement(int player, int row) {

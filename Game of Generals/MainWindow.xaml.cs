@@ -116,24 +116,27 @@ namespace Game_of_Generals {
 				moved = true;
 				moving = false;
 			} else {
-				if (lastRect != null) lastRect.Fill = Brushes.Black;
-				if (players[currentPlayer].pieces.Count() - players[currentPlayer].onBoardPieces != 0) {
-					players[currentPlayer].placementGrid.Visibility = System.Windows.Visibility.Visible;
+                if (Rules.canPlace()) {
+                    if (players[currentPlayer].pieces.Count() - players[currentPlayer].onBoardPieces != 0) {
+                        players[currentPlayer].placementGrid.Visibility = System.Windows.Visibility.Visible;
 
-					if (Rules.legalPlacement(currentPlayer, Grid.GetRow(rect))) {
-						placementColumn = Grid.GetColumn(rect);
-						placementRow = Grid.GetRow(rect);
-						rect.Fill = Brushes.LightGreen;
-					} else {
-						placementColumn = -1;
-						placementRow = -1;
-						rect.Fill = Brushes.PaleVioletRed;
-					}
-					lastRect = rect;
-				} else {
-					players[currentPlayer].placementGrid.Visibility = System.Windows.Visibility.Hidden;
-				}
+                        if (Rules.legalPlacement(currentPlayer, Grid.GetRow(rect))) {
+                            placementColumn = Grid.GetColumn(rect);
+                            placementRow = Grid.GetRow(rect);
+                            rect.Fill = Brushes.LightGreen;
+                        } else {
+                            placementColumn = -1;
+                            placementRow = -1;
+                            rect.Fill = Brushes.PaleVioletRed;
+                        }
+
+                    } else {
+                        players[currentPlayer].placementGrid.Visibility = System.Windows.Visibility.Hidden;
+                    }
+                }
 			}
+            if (lastRect != null) lastRect.Fill = Brushes.Black;
+            lastRect = rect;
 		}
 
 		private void finishButton_Click(object sender, RoutedEventArgs e) {
@@ -145,7 +148,8 @@ namespace Game_of_Generals {
 				moved = false;
 				switchRectangle.Visibility = Visibility.Hidden;
 				btn.Content = "Finish Turn";
-			} else {
+                Rules.nextTurn();
+			} else if (Rules.mayPass()){
 				switchRectangle.Visibility = Visibility.Visible;
 				foreach (Piece piece in players[currentPlayer].pieces) {
 					if (piece.OnBoard) piece.flip(false);
