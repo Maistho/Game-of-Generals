@@ -126,7 +126,7 @@ namespace Game_of_Generals {
 			placementColumn = Grid.GetColumn(rect);
 			placementRow = Grid.GetRow(rect);
 		}
-    }
+        }
 
     public class Player {
         public ObservableCollection<Piece> pieces = new ObservableCollection<Piece>();
@@ -168,6 +168,8 @@ namespace Game_of_Generals {
 		void img_MouseUp(object sender, MouseButtonEventArgs e) {
 			if (onBoard) {
 				//Piece is on board, init moving
+                //TODO: Ask rules engine about legal destinations
+                //Highlight destinations, wait for click.
 			} else {
 				Position = new int[2] { MainWindow.placementColumn, MainWindow.placementRow };
 				onBoard = true;
@@ -210,9 +212,9 @@ namespace Game_of_Generals {
         
         public Grid Parent {
             set {
-				Grid grid = this.img.Parent as Grid;
+                Grid grid = this.img.Parent as Grid;
 				if (grid != null) {
-					grid.Children.Remove(this.img);
+                grid.Children.Remove(this.img);
 				}
                 value.Children.Add(img);
             }
