@@ -23,19 +23,19 @@ namespace Game_of_Generals {
 		private Player[] players = {new Player(new Grid(),true), new Player(new Grid(),false)};
 		private int currentPlayer;
 		private int rows, columns;
+		private Rectangle lastRect;
 		public static int placementColumn, placementRow;
         public MainWindow() {
             InitializeComponent();
 			DataContext = this;
 			players[0].placementGrid = pnlP1PiecesGrid;
 			players[1].placementGrid = pnlP2PiecesGrid;
+			currentPlayer = 0;
 			rows = 8;
 			columns = 9;
             paintGrid();
-			currentPlayer = 1;
-			populatePlacement();
-			currentPlayer = 0;
-			populatePlacement();
+			populatePlacement(0);
+			populatePlacement(1);
         }
 
         private void paintGrid() {
@@ -79,8 +79,6 @@ namespace Game_of_Generals {
                     Grid.SetColumn(rect, j);
                     Grid.SetRow(rect, i);
 					rect.Stroke = Brushes.Green;
-                    rect.MouseEnter += rect_MouseEnter;
-                    rect.MouseLeave += rect_MouseLeave;
 					rect.MouseUp += rect_MouseUp;
                 }
             }
@@ -94,11 +92,11 @@ namespace Game_of_Generals {
 
         }
 
-		private void populatePlacement() {
+		private void populatePlacement(int player) {
 			int i = 0;
 			int j = 0;
-			foreach (Piece piece in players[currentPlayer].pieces) {
-				piece.Parent = players[currentPlayer].placementGrid;
+			foreach (Piece piece in players[player].pieces) {
+				piece.Parent = players[player].placementGrid;
 				piece.Position = new int[2] { i, j };
 				i = (i + 1) % columns;
 				if (i == 0) {
@@ -116,24 +114,18 @@ namespace Game_of_Generals {
 		}
 
 		void rect_MouseUp(object sender, MouseButtonEventArgs e) {
+			if(lastRect != null) lastRect.Fill = Brushes.Black;
+			Rectangle rect = sender as Rectangle;
 			if (players[currentPlayer].pieces.Count() - players[currentPlayer].onBoardPieces != 0) {
 				players[currentPlayer].placementGrid.Visibility = System.Windows.Visibility.Visible;
+				rect.Fill = Brushes.LightGreen;
+			} else {
+				players[currentPlayer].placementGrid.Visibility = System.Windows.Visibility.Hidden;
 			}
-
-			Rectangle rect = sender as Rectangle;
+			lastRect = rect;
 			placementColumn = Grid.GetColumn(rect);
 			placementRow = Grid.GetRow(rect);
 		}
-
-        void rect_MouseLeave(object sender, MouseEventArgs e) {
-            Rectangle rect = sender as Rectangle;
-            rect.Fill = Brushes.Black;
-        }
-
-        private void rect_MouseEnter(object sender, MouseEventArgs e) {
-            Rectangle rect = sender as Rectangle;
-            rect.Fill = Brushes.Blue;
-        }
     }
 
     public class Player {
@@ -148,7 +140,7 @@ namespace Game_of_Generals {
             for(int i = 0; i <= 14; ++i) {
 				for(int j = 1; j > 0; --j) {
 					//TODO: Ask rule engine how many pieces of current rank to add
-					pieces.Add(new Piece(i, colour));
+					pieces.Add(new Piece(this, i, colour));
 				}
             }
         }
@@ -159,9 +151,11 @@ namespace Game_of_Generals {
         private bool colour; //True is green
         private Image img;
         private bool onBoard;
+		private Player player;
 
 
-        public Piece(int r, bool c) {
+        public Piece(Player p, int r, bool c) {
+			player = p;
             rank = r;
             colour = c;
             onBoard = false;
@@ -178,7 +172,8 @@ namespace Game_of_Generals {
 				Position = new int[2] { MainWindow.placementColumn, MainWindow.placementRow };
 				onBoard = true;
 				Parent = (Grid)Application.Current.MainWindow.FindName("pnlBoardGrid");
-				//TODO: Hide the board and change player
+				player.onBoardPieces += 1;
+				//Set color to black on rect
 				//piece is not on board, finish placement
 			}
         }
