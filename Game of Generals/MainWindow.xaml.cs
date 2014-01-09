@@ -156,7 +156,7 @@ namespace Game_of_Generals {
 
         public int getRank() {
             return rank;
-        }
+		}
 
         public bool getColour() {
             return colour;
