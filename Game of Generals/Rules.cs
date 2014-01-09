@@ -69,7 +69,7 @@ namespace Game_of_Generals {
 			return 14;
 		}
 		public static int numberOfPieces(int rank) {
-			switch(rank){
+			switch (rank) {
 				case 1:
 					return 6;
 				case 14:
@@ -80,35 +80,27 @@ namespace Game_of_Generals {
 
 		}
 
-        public static int stronger(Piece p1, Piece p2) {
-            int diff = p1.getRank() - p2.getRank();
-            if (diff == 0) {
-                if (p1.getRank() == 0) {
-                    return 3; //Both are flags
-                } else {
-                    return 0; //Equal non-flags
-                }
-            } else if (diff < 0) {
-                if (p2.getRank() == 14) {
-                    if (p1.getRank() == 1) {
-                        return 1;
-                    } else if (p1.getRank() == 0) {
-                        return 5; //P1 flag captured
-                    }
-                }
-                return 2;
-            } else {
-                if (p1.getRank() == 14) {
-                    if (p2.getRank() == 1) {
-                        return 2;
-                    } else if (p2.getRank() == 0) {
-                        return 4; //P2 flag captured
-                    }
-                }
-                return 1;
-            }
+		public static int stronger(Piece p1, Piece p2) {
+			int diff = p1.getRank() - p2.getRank();
+			if (diff == 0) {
+				if (p1.getRank() == 0) {
+					return 2; //Both are flags, challenging flag wins
+				} else {
+					return 0; //Equal non-flags, both loses
+				}
+			} else if (diff < 0) {
+				if (p2.getRank() == 14 && p1.getRank() == 1) {
+					return 1; //p2 is Spy and p1 is Private, p1 wins
+				}
+				return 2; //p2 wins
+			} else {
+				if (p1.getRank() == 14 && p2.getRank() == 1) {
+					return 2; //p1 is Spy and p2 is Private, p2 wins
+				}
+				return 1; //p1 wins
+			}
 
-        }
+		}
 
 	}
 }
