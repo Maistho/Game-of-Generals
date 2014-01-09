@@ -126,7 +126,7 @@ namespace Game_of_Generals {
 			Button btn = sender as Button;
 			if (switchRectangle.Visibility == Visibility.Visible) {
 				foreach (Piece piece in players[currentPlayer].pieces) {
-					if (piece.OnBoard) piece.flip(false);
+					if (piece.OnBoard) piece.flip(true);
 				}
 				switchRectangle.Visibility = Visibility.Hidden;
 				btn.Content = "Finish Turn";
