@@ -26,6 +26,6 @@
         </Grid>
         <Grid Name="pnlBoardGrid" Grid.Column="1" Grid.Row="1">
         </Grid>
-        <Button Name="finishButton" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <Button Name="finishButton" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Finish turn" MouseUp="finishButton_MouseUp"/>
     </Grid>
 </Window>
