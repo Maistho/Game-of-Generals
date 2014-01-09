@@ -222,7 +222,7 @@ namespace Game_of_Generals {
         }
 
         public void flip(bool faceup) {
-            if (faceup) {
+            if (!faceup) {
                 img.Source = blank;
                 faceup = false;
             } else {
