@@ -84,13 +84,13 @@ namespace Game_of_Generals {
 					rect.MouseUp += rect_MouseUp;
                 }
             }
-			Image img = new Image();
+			/*Image img = new Image();
 			img.Source = new BitmapImage(new Uri("pack://application:,,,/Game of Generals;component/pieces/0r.png", UriKind.Absolute));
 			img.Stretch = Stretch.Uniform;
 			pnlBoardGrid.Children.Add(img);
 			Grid.SetColumn(img, 1);
 			Grid.SetRow(img, 2);
-			img.MouseUp += img_MouseUp;
+			img.MouseUp += img_MouseUp;*/
 
         }
 
@@ -118,6 +118,7 @@ namespace Game_of_Generals {
 		void rect_MouseUp(object sender, MouseButtonEventArgs e) {
             Rectangle rect = sender as Rectangle;
             if (moving) {
+                //TODO: Ask rules engine if move is legal
                 movedPiece.Position = new int[2] { Grid.GetColumn(rect), Grid.GetRow(rect) };
                 moving = false;
             } else {
