@@ -24,6 +24,8 @@ namespace Game_of_Generals {
 		private int currentPlayer;
 		private int rows, columns;
 		private Rectangle lastRect;
+        public static bool moving;
+        public static Piece movedPiece;
 		public static int placementColumn, placementRow;
         public MainWindow() {
             InitializeComponent();
@@ -114,19 +116,24 @@ namespace Game_of_Generals {
 		}
 
 		void rect_MouseUp(object sender, MouseButtonEventArgs e) {
-			if(lastRect != null) lastRect.Fill = Brushes.Black;
-			Rectangle rect = sender as Rectangle;
-			if (players[currentPlayer].pieces.Count() - players[currentPlayer].onBoardPieces != 0) {
-				players[currentPlayer].placementGrid.Visibility = System.Windows.Visibility.Visible;
-				rect.Fill = Brushes.LightGreen;
-			} else {
-				players[currentPlayer].placementGrid.Visibility = System.Windows.Visibility.Hidden;
-			}
-			lastRect = rect;
-			placementColumn = Grid.GetColumn(rect);
-			placementRow = Grid.GetRow(rect);
+            Rectangle rect = sender as Rectangle;
+            if (moving) {
+                movedPiece.Position = new int[2] { Grid.GetColumn(rect), Grid.GetRow(rect) };
+                moving = false;
+            } else {
+                if (lastRect != null) lastRect.Fill = Brushes.Black;
+                if (players[currentPlayer].pieces.Count() - players[currentPlayer].onBoardPieces != 0) {
+                    players[currentPlayer].placementGrid.Visibility = System.Windows.Visibility.Visible;
+                    rect.Fill = Brushes.LightGreen;
+                } else {
+                    players[currentPlayer].placementGrid.Visibility = System.Windows.Visibility.Hidden;
+                }
+                lastRect = rect;
+                placementColumn = Grid.GetColumn(rect);
+                placementRow = Grid.GetRow(rect);
+            }
 		}
-        }
+    }
 
     public class Player {
         public ObservableCollection<Piece> pieces = new ObservableCollection<Piece>();
@@ -170,6 +177,8 @@ namespace Game_of_Generals {
 				//Piece is on board, init moving
                 //TODO: Ask rules engine about legal destinations
                 //Highlight destinations, wait for click.
+                MainWindow.moving = true;
+                MainWindow.movedPiece = this;
 			} else {
 				Position = new int[2] { MainWindow.placementColumn, MainWindow.placementRow };
 				onBoard = true;
