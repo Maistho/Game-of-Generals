@@ -102,6 +102,7 @@ namespace Game_of_Generals {
 		void rect_MouseUp(object sender, MouseButtonEventArgs e) {
 			Rectangle rect = sender as Rectangle;
             if (moving) {
+                //TODO: Ask rules engine if move is legal
                 movedPiece.Position = new int[2] { Grid.GetColumn(rect), Grid.GetRow(rect) };
                 moving = false;
             } else {
@@ -123,7 +124,7 @@ namespace Game_of_Generals {
 
 		private void finishButton_MouseUp(object sender, MouseButtonEventArgs e) {
 			switchRectangle.Visibility = Visibility.Visible;
-		}
+        }
     }
 
     public class Player {
