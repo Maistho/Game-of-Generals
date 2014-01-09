@@ -32,6 +32,7 @@ namespace Game_of_Generals {
 			rows = 8;
 			columns = 9;
             paintGrid();
+			populatePlacement();
         }
 
         private void paintGrid() {
@@ -81,11 +82,7 @@ namespace Game_of_Generals {
                 }
             }
 			Image img = new Image();
-			BitmapImage src = new BitmapImage();
-			src.BeginInit();
-			src.UriSource = new Uri("pack://application:,,,/Game of Generals;component/pieces/14r.png", UriKind.Absolute);
-			src.EndInit();
-			img.Source = src;
+			img.Source = new BitmapImage(new Uri("pack://application:,,,/Game of Generals;component/pieces/0r.png", UriKind.Absolute));
 			img.Stretch = Stretch.Uniform;
 			pnlBoardGrid.Children.Add(img);
 			Grid.SetColumn(img, 1);
@@ -94,8 +91,13 @@ namespace Game_of_Generals {
 
         }
 
+		private void populatePlacement() {
+		}
+
 		void img_MouseUp(object sender, MouseButtonEventArgs e) {
 			Image img = sender as Image;
+			int column = Grid.GetColumn(img);
+			int row = Grid.GetRow(img);
 			//Do stuff like moving the image
 
 		}
@@ -143,13 +145,21 @@ namespace Game_of_Generals {
         private Image img;
         private bool onBoard;
 
+
         public Piece(int r, bool c) {
             rank = r;
             colour = c;
             onBoard = false;
             img = new Image();
-            img.Source = new BitmapImage(new Uri("pack://application:,,,/Game of Generals;component/pieces/" + rank.ToString() + (colour ? "" : "r") + ".png", UriKind.Absolute));
+			img.Source = new BitmapImage(new Uri("pack://application:,,,/Game of Generals;component/pieces/" + rank.ToString() + (colour ? "" : "r") + ".png", UriKind.Absolute));
             img.Stretch = Stretch.Uniform;
+			img.MouseUp += img_MouseUp;
+        }
+
+		void img_MouseUp(object sender, MouseButtonEventArgs e) {
+			Grid img = sender as Grid;
+			int column = Grid.GetColumn(img);
+			int row = Grid.GetRow(img);
         }
 
         public int getRank() {
@@ -163,7 +173,7 @@ namespace Game_of_Generals {
         public int[] Position {
             get {
                 if (onBoard) {
-                    return new int[2] { Grid.GetColumn(img), Grid.GetRow(img) };
+                return new int[2] { Grid.GetColumn(img), Grid.GetRow(img) };
                 } else {
                     return new int[2] { -1, -1 };
                 }
