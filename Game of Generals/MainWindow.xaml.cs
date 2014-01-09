@@ -173,6 +173,9 @@ namespace Game_of_Generals {
 				onBoard = true;
 				Parent = (Grid)Application.Current.MainWindow.FindName("pnlBoardGrid");
 				player.onBoardPieces += 1;
+				MainWindow.placementColumn = 0;
+				MainWindow.placementRow = 0;
+
 				//Set color to black on rect
 				//piece is not on board, finish placement
 			}
