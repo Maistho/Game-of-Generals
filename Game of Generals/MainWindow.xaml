@@ -13,7 +13,6 @@
             <ColumnDefinition Width="900"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Image Source="graphics/Pieces/14r.png"/>
         <Grid Name="pnlOverlayGrid" Grid.Column="1" Grid.Row="1" Panel.ZIndex="100">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
