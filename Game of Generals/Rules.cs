@@ -19,10 +19,11 @@ namespace Game_of_Generals {
             return (turn < 2);
         }
 
-        public static bool mayPass() {
-            if (turn > 1 || MainWindow.players[MainWindow.CurrentPlayer].onBoardPieces == 21) {
+        public static bool mayPass(Player player) {
+            if (turn > 1 || player.onBoardPieces == 21) {
                 return true;
             } else {
+                //YOU SHALL NOT PASS
                 return false;
             }
         }

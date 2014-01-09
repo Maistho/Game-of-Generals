@@ -155,7 +155,7 @@ namespace Game_of_Generals {
 				switchRectangle.Visibility = Visibility.Hidden;
 				btn.Content = "Finish Turn";
                 Rules.nextTurn();
-			} else if (Rules.mayPass()){
+            } else if (Rules.mayPass(MainWindow.players[MainWindow.CurrentPlayer])) {
 				switchRectangle.Visibility = Visibility.Visible;
 				foreach (Piece piece in players[currentPlayer].pieces) {
 					if (piece.OnBoard) piece.flip(false);
