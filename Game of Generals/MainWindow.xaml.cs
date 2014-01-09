@@ -128,8 +128,8 @@ namespace Game_of_Generals {
 
         public Player() {
             //TODO: Ask rule engine how many different pieces
-            for(int i = 0; i <= 15; ++i) {
-				for(int j = 1; j >= 0; --j) {
+            for(int i = 0; i <= 14; ++i) {
+				for(int j = 1; j > 0; --j) {
 					//TODO: Ask rule engine how many pieces of current rank to add
 					pieces.Add(new Piece(i, true));
 				}
@@ -141,16 +141,14 @@ namespace Game_of_Generals {
         private int rank;
         private bool colour; //True is green
         private Image img;
+        private bool onBoard;
 
         public Piece(int r, bool c) {
             rank = r;
             colour = c;
+            onBoard = false;
             img = new Image();
-            BitmapImage src = new BitmapImage();
-            src.BeginInit();
-            src.UriSource = new Uri("pack://application:,,,/Game of Generals;component/pieces/" + rank.ToString() + (colour ? "" : "r") + ".png", UriKind.Absolute);
-            src.EndInit();
-            img.Source = src;
+            img.Source = new BitmapImage(new Uri("pack://application:,,,/Game of Generals;component/pieces/" + rank.ToString() + (colour ? "" : "r") + ".png", UriKind.Absolute));
             img.Stretch = Stretch.Uniform;
         }
 
@@ -164,9 +162,18 @@ namespace Game_of_Generals {
 
         public int[] Position {
             get {
-                return new int[2] { Grid.GetColumn(img), Grid.GetRow(img) };
+                if (onBoard) {
+                    return new int[2] { Grid.GetColumn(img), Grid.GetRow(img) };
+                } else {
+                    return new int[2] { -1, -1 };
+                }
             }
             set {
+                if (!onBoard) {
+                    onBoard = true;
+                    
+//                    pnlBoardGrid.Children.Add(img);
+                }
                 Grid.SetColumn(img, value[0]);
                 Grid.SetRow(img, value[1]);
             }
