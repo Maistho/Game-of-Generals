@@ -30,6 +30,7 @@ namespace Game_of_Generals {
 		public static Piece movedPiece;
 		public static int placementColumn, placementRow;
 		public static bool moved;
+		public static ObservableCollection<Piece> deadPieces = new ObservableCollection<Piece>();
 		public MainWindow() {
 			InitializeComponent();
 			DataContext = this;
@@ -207,38 +208,27 @@ namespace Game_of_Generals {
                         Grid dead = new Grid();
                         switch (Rules.stronger(this, MainWindow.movedPiece)) {
                             case 0:
+								MainWindow.deadPieces.Add(this);
                                 this.Parent = dead;
+								MainWindow.deadPieces.Add(MainWindow.movedPiece);
                                 MainWindow.movedPiece.Parent = dead;
                                 break;
                             case 1:
                                 MainWindow.movedPiece.Parent = dead;
                                 break;
                             case 2:
+								MainWindow.deadPieces.Add(this);
                                 this.Parent = dead;
-                                break;
-                            case 3:
-                                MainWindow.gameEnd = true;
-                                MainWindow.winner = this.getPlayer();
-                                break;
-                            case 4:
-                                MainWindow.gameEnd = true;
-                                MainWindow.winner = this.getPlayer();
-                                break;
-                            case 5:
-                                MainWindow.gameEnd = true;
-                                MainWindow.winner = MainWindow.movedPiece.getPlayer();
                                 break;
                             default:
                                 break;
                         }
-						//TODO: Ask rules engine which piece to remove
 					}
 					MainWindow.moved = true;
 					MainWindow.moving = false;
 					MainWindow.movedPiece = null;
 				} else if (!MainWindow.moved && player == MainWindow.CurrentPlayer) {
-					//TODO: Ask rules engine about legal destinations
-					//Highlight destinations
+					//TODO:	Highlight destinations
 					MainWindow.moving = true;
 					MainWindow.movedPiece = this;
 				}
