@@ -26,6 +26,7 @@ namespace Game_of_Generals {
 		private int placementColumn, placementRow;
         public MainWindow() {
             InitializeComponent();
+            DataContext = this;
 			player1 = new Player();
 			player2 = new Player();
 			currentPlayer = 1;
@@ -196,22 +197,29 @@ namespace Game_of_Generals {
             return colour;
         }
 
-        public int[] Position {
+
+        public bool OnBoard {
             get {
-                if (onBoard) {
-                return new int[2] { Grid.GetColumn(img), Grid.GetRow(img) };
-                } else {
-                    return new int[2] { -1, -1 };
-                }
+                return onBoard;
             }
             set {
-                if (!onBoard) {
-                    onBoard = true;
-                    
-//                    pnlBoardGrid.Children.Add(img);
-                }
+                onBoard = value;
+            }
+        }
+        public int[] Position {
+            get {
+                return new int[2] { Grid.GetColumn(img), Grid.GetRow(img) };
+            }
+            set {
                 Grid.SetColumn(img, value[0]);
                 Grid.SetRow(img, value[1]);
+            }
+        }
+        
+        public Grid Parent {
+            get;
+            set {
+                value.Children.Add(img);
             }
         }
 
