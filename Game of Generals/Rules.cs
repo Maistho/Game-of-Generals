@@ -84,7 +84,7 @@ namespace Game_of_Generals {
 		}
 
 		public static int victoryCheck(Piece flagP1, Piece flagP2) {
-			if (flagP1.dead) {
+			/*if (flagP1.dead) {
 				return 2;
 			} else if(flagP2.dead) {
 				return 1;
@@ -100,7 +100,7 @@ namespace Game_of_Generals {
 				} else {
 					P2Winning = true;
 				}
-			}
+			}*/
 			return 0;
 		}
 
