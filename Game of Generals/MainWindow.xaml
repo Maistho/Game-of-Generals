@@ -60,30 +60,30 @@
             </Grid>-->
             <Rectangle Name="switchRectangle" Grid.Row="0" Grid.RowSpan="2" Fill="Black" Visibility="Hidden"/>
         </Grid>
-        <ItemsControl Name="gameBoard">
+        <ItemsControl Name="gameBoard" Grid.Column="1" Grid.Row="1">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Grid Name="pnlBoardGrid" Grid.Column="1" Grid.Row="1">
+                    <Grid ShowGridLines="True" MouseUp="grid_MouseUp">
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
+                            <RowDefinition Height="100"/>
+                            <RowDefinition Height="100"/>
+                            <RowDefinition Height="100"/>
+                            <RowDefinition Height="100"/>
+                            <RowDefinition Height="100"/>
+                            <RowDefinition Height="100"/>
+                            <RowDefinition Height="100"/>
+                            <RowDefinition Height="100"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
                         </Grid.ColumnDefinitions>
                     </Grid>
                 </ItemsPanelTemplate>
@@ -100,7 +100,7 @@
             
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Image Source="{Binding Image}" />
+                    <Image Source="{Binding Image}" MouseUp="{Binding piece_MouseUp}"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
