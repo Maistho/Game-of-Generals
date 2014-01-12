@@ -89,7 +89,7 @@ namespace Game_of_Generals {
 			*/
 
 			//Fill the grid with rectangles
-			for (int i = pnlBoardGrid.RowDefinitions.Count(); i >= 0; --i) {
+			/*for (int i = pnlBoardGrid.RowDefinitions.Count(); i >= 0; --i) {
 				for (int j = pnlBoardGrid.ColumnDefinitions.Count(); j >= 0; --j) {
 					Rectangle rect = new Rectangle();
 					rect.Fill = Brushes.Black;
@@ -99,7 +99,7 @@ namespace Game_of_Generals {
 					rect.Stroke = Brushes.Green;
 					rect.MouseUp += rect_MouseUp;
 				}
-			}
+			}*/
 		}
 
 /*		private void populatePlacement(int player) {
@@ -115,13 +115,15 @@ namespace Game_of_Generals {
 			}
 		}*/
 
-		void rect_MouseUp(object sender, MouseButtonEventArgs e) {
-			Rectangle rect = sender as Rectangle;
+		void grid_MouseUp(object sender, MouseButtonEventArgs e) {
+            Point position = e.GetPosition((Grid)sender);
+            int[] clickedPos = new int[2] { (int)(position.X / ((Grid)sender).ColumnDefinitions[0].ActualWidth -1), (int)(position.X / ((Grid)sender).RowDefinitions[0].ActualHeight -1)};
+            MessageBox.Show("You clicked at [" + clickedPos[0] + "," + clickedPos[1] + "].");
+
 			if (moving) {
-				int[] newMove = new int[2] { Grid.GetColumn(rect), Grid.GetRow(rect) };
-				if (Rules.legalMove(movedPiece, newMove)) {
-                    movedPiece.X = newMove[0];
-                    movedPiece.Y = newMove[1];
+				if (Rules.legalMove(movedPiece, clickedPos)) {
+                    movedPiece.X = clickedPos[0];
+                    movedPiece.Y = clickedPos[1];
 					moved = true;
 				}
 				moving = false;
@@ -145,8 +147,8 @@ namespace Game_of_Generals {
                     }
                 }*/
 			}
-            if (lastRect != null) lastRect.Fill = Brushes.Black;
-            lastRect = rect;
+            //if (lastRect != null) lastRect.Fill = Brushes.Black;
+            //lastRect = rect;
 		}
 
 		private void finishButton_Click(object sender, RoutedEventArgs e) {
