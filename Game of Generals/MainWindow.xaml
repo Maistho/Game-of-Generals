@@ -20,12 +20,51 @@
             </Grid.RowDefinitions>
             
             <Grid Name="pnlP1PiecesGrid" Grid.Row="0" Visibility="Hidden">
+                <Grid.RowDefinitions>
+                    <RowDefinition/> <RowDefinition/>
+                    <RowDefinition/> <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
             </Grid>
             <Grid Name="pnlP2PiecesGrid" Grid.Row="1" Visibility="Hidden">
+                <Grid.RowDefinitions>
+                    <RowDefinition/> <RowDefinition/>
+                    <RowDefinition/> <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/> <ColumnDefinition/>
+                    <ColumnDefinition/> <ColumnDefinition/>
+                    <ColumnDefinition/> <ColumnDefinition/>
+                    <ColumnDefinition/> <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
             </Grid>
             <Rectangle Name="switchRectangle" Grid.Row="0" Grid.RowSpan="2" Fill="Black" Visibility="Hidden"/>
         </Grid>
         <Grid Name="pnlBoardGrid" Grid.Column="1" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/> <RowDefinition/>
+                <RowDefinition/> <RowDefinition/>
+                <RowDefinition/> <RowDefinition/>
+                <RowDefinition/> <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/> <ColumnDefinition/>
+                <ColumnDefinition/> <ColumnDefinition/>
+                <ColumnDefinition/> <ColumnDefinition/>
+                <ColumnDefinition/> <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
         </Grid>
         <Button Name="finishButton" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Finish turn" FontSize="30" Click="finishButton_Click" />
     </Grid>

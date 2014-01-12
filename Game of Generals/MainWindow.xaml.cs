@@ -51,6 +51,7 @@ namespace Game_of_Generals {
 
 		private void paintGrid() {
 
+			/* (moved to XAML)
 			//Add grid definitions to the boardGrid
 			for (int i = rows; i > 0; --i) {
 				RowDefinition row = new RowDefinition();
@@ -61,7 +62,9 @@ namespace Game_of_Generals {
 				column.Width = new GridLength(1, GridUnitType.Star);
 				pnlBoardGrid.ColumnDefinitions.Add(column);
 			}
+			*/
 
+			/*  (moved to XAML)
 			//Add grid definitions to the player placementGrids
 			for (int i = rows / 2; i > 0; --i) {
 				RowDefinition row = new RowDefinition();
@@ -80,6 +83,7 @@ namespace Game_of_Generals {
 				column.Width = new GridLength(1, GridUnitType.Star);
 				pnlP2PiecesGrid.ColumnDefinitions.Add(column);
 			}
+			*/
 
 			//Fill the grid with rectangles
 			for (int i = pnlBoardGrid.RowDefinitions.Count(); i >= 0; --i) {
