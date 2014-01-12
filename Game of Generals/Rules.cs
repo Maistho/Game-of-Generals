@@ -80,27 +80,26 @@ namespace Game_of_Generals {
 				default:
 					return 1;
 			}
-
 		}
 
 		public static int victoryCheck(Piece flagP1, Piece flagP2) {
-			/*if (flagP1.dead) {
+			if (flagP1.dead) {
 				return 2;
 			} else if(flagP2.dead) {
 				return 1;
-			} else if (flagP1.row == 0) {
+			} else if (flagP1.Y == 0) {
 				if (P1Winning == true) {
 					return 1;
 				} else {
 					P1Winning = true;
 				}
-			} else if (flagP2.row == 7) {
+			} else if (flagP2.Y == 7) {
 				if (P2Winning == true) {
 					return 1;
 				} else {
 					P2Winning = true;
 				}
-			}*/
+			}
 			return 0;
 		}
 

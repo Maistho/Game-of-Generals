@@ -17,9 +17,22 @@ namespace Game_of_Generals {
 		private int player;
 		private BitmapImage blank;
 		private BitmapImage face;
+		private int x, y;
+		public int X {
+			get {
+				return x;
+			}
+		}
+		public int Y {
+			get {
+				return y;
+			}
+		}
+
 		public bool dead = false;
 
 		public Piece(int r, int p) {
+			x = y = -1;
 			rank = r;
 			player = p;
 			onBoard = false;
@@ -112,6 +125,8 @@ namespace Game_of_Generals {
 				return new int[2] { Grid.GetColumn(img), Grid.GetRow(img) };
 			}
 			set {
+				x = value[0];
+				y = value[1];
 				Grid.SetColumn(img, value[0]);
 				Grid.SetRow(img, value[1]);
 			}

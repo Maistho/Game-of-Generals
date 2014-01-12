@@ -34,6 +34,8 @@ namespace Game_of_Generals {
 		public static Piece flag0, flag1;
 		public MainWindow() {
 			InitializeComponent();
+			flag0 = players[0].pieces.Single(x => x.getRank() == 0);
+			flag1 = players[1].pieces.Single(x => x.getRank() == 0);
 			DataContext = this;
 			players[0].placementGrid = pnlP1PiecesGrid;
 			players[1].placementGrid = pnlP2PiecesGrid;
@@ -147,11 +149,12 @@ namespace Game_of_Generals {
 
 		private void finishButton_Click(object sender, RoutedEventArgs e) {
 			Button btn = sender as Button;
-			int vic = Rules.victoryCheck(flag0, flag1);
-			if ( vic > 0) {
-				MessageBox.Show("Player " + vic.ToString() + " has won!");
-			}
+			
 			if (switchRectangle.Visibility == Visibility.Visible) {
+				int vic = Rules.victoryCheck(flag0, flag1);
+				if (vic > 0) {
+					MessageBox.Show("Player " + vic.ToString() + " has won!");
+				}
 				foreach (Piece piece in players[currentPlayer].pieces) {
 					if (piece.OnBoard) piece.flip(true);
 				}
