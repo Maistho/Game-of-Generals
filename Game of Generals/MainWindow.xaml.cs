@@ -31,6 +31,7 @@ namespace Game_of_Generals {
 		public static int placementColumn, placementRow;
 		public static bool moved;
 		public static ObservableCollection<Piece> deadPieces = new ObservableCollection<Piece>();
+        public static ObservableCollection<Piece> boardPieces = new ObservableCollection<Piece>();
 		public static Piece flag0, flag1;
 		public MainWindow() {
 			InitializeComponent();
