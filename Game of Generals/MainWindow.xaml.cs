@@ -24,10 +24,13 @@ namespace Game_of_Generals {
 		//public DbSet<> currentPlayer { get; set; }
 	}
 	public class Game {
+		public Game() {
+
+		}
 		public Game(ObservableCollection<Piece> p) {
 			pieces = p;
 		}
-		public int boardId { get; set; }
+		public int gameId { get; set; }
 		public virtual int currentPlayer { get; set; }
 		public virtual ObservableCollection<Piece> pieces { get; set; }
 	}
@@ -43,24 +46,26 @@ namespace Game_of_Generals {
 		public static Piece movedPiece;
 		public static int placementColumn, placementRow;
 		public static bool moved;
-		public static ObservableCollection<Piece> deadPieces = new ObservableCollection<Piece>();
-		public static ObservableCollection<Piece> boardPieces;
 		public static Piece flag0, flag1;
 
+		private static GameContext db;
 		private static Game game;
 
 
 		//private GameContext db = new GameContext();
 		public MainWindow() {
-			using (var db = new GameContext()) {
-				if (db.games.Count() == 0) {
-					var boardPieces = new ObservableCollection<Piece>();
-					game = new Game(boardPieces);
-					db.games.Add(game);
-					game.currentPlayer = 0;
-				} else {
-					game = db.games.FirstOrDefault();
-				}
+			db = new GameContext();
+			if (db.games.Count() == 0) {
+				// If no saved games
+				var boardPieces = new ObservableCollection<Piece>();
+				game = new Game(boardPieces);
+				db.games.Add(game);
+				game.currentPlayer = 0;
+			} else {
+				// If saved games, then take the first one.
+				// TODO: choose between saves?
+				game = db.games.First();
+			}
 				db.SaveChanges();
 			InitializeComponent();
 			//flag0 = players[0].pieces.Single(x => x.getRank() == 0);
@@ -71,11 +76,10 @@ namespace Game_of_Generals {
 			rows = 8;
 			columns = 9;
 			paintGrid();
-            gameBoard.ItemsSource = boardPieces;
-            boardPieces.Add(new Piece(4,7,0,0));
+			gameBoard.ItemsSource = game.pieces;
+            game.pieces.Add(new Piece(4,7,0,0));
 			//populatePlacement(0);
 			//populatePlacement(1);
-		}
 		}
 
 		public static int CurrentPlayer {
@@ -155,14 +159,14 @@ namespace Game_of_Generals {
 
                     switch (Rules.stronger(clicked, movedPiece)) {
                         case 0:
-                            boardPieces.Remove(clicked);
-                            boardPieces.Remove(movedPiece);
+                            game.pieces.Remove(clicked);
+                            game.pieces.Remove(movedPiece);
                             break;
                         case 1:
-                            boardPieces.Remove(movedPiece);
+                            game.pieces.Remove(movedPiece);
                             break;
                         case 2:
-                            boardPieces.Remove(clicked);
+                            game.pieces.Remove(clicked);
                             break;
                         default:
                             break;
@@ -233,7 +237,7 @@ namespace Game_of_Generals {
 				if (vic > 0) {
 					MessageBox.Show("Player " + vic.ToString() + " has won!");
 				}
-				foreach (Piece piece in boardPieces) {
+				foreach (Piece piece in game.pieces) {
 					if (piece.Player == currentPlayer) piece.flip(true);
 				}
 				moved = false;
@@ -242,7 +246,7 @@ namespace Game_of_Generals {
                 Rules.nextTurn();
             } else /*if (Rules.mayPass(MainWindow.players[MainWindow.CurrentPlayer]))*/ {
 				switchRectangle.Visibility = Visibility.Visible;
-				foreach (Piece piece in boardPieces) {
+				foreach (Piece piece in game.pieces) {
 					if (piece.Player == currentPlayer) piece.flip(false);
 				}
 				//players[currentPlayer].placementGrid.Visibility = Visibility.Hidden;
@@ -253,7 +257,7 @@ namespace Game_of_Generals {
 		}
 
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
-			//db.SaveChanges();
+			db.SaveChanges();
 		}
 	}
 

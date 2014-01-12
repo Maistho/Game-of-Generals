@@ -75,7 +75,7 @@ namespace Game_of_Generals {
 
         }
 
-
+		public Piece() { }
 		public Piece(int x, int y, int r, int p) {
             xpos = x;
             ypos = y;
