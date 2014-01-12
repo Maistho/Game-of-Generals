@@ -19,6 +19,17 @@ namespace Game_of_Generals {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
+	public class GameContext : DbContext {
+		public DbSet<Board> boards { get; set; }
+		//public DbSet<> currentPlayer { get; set; }
+	}
+	public class Board {
+		public Board(ObservableCollection<Piece> p) {
+			pieces = p;
+		}
+		public int boardId { get; set; }
+		public virtual ObservableCollection<Piece> pieces { get; set; }
+	}
 	public partial class MainWindow : Window {
 
 		//public static Player[] players = { new Player(new Grid(), 0), new Player(new Grid(), 1) };
@@ -32,30 +43,30 @@ namespace Game_of_Generals {
 		public static int placementColumn, placementRow;
 		public static bool moved;
 		public static ObservableCollection<Piece> deadPieces = new ObservableCollection<Piece>();
-		public static ObservableCollection<Piece> boardPieces = new ObservableCollection<Piece>();
+		public static ObservableCollection<Piece> boardPieces;
 		public static Piece flag0, flag1;
 
-		private class GameContext : DbContext {
-			public DbSet<ObservableCollection<Piece>> boardPieces { get; set; }
-			public DbSet<int> currentPlayer { get; set; }
-		}
-		private GameContext db = new GameContext();
+
+		//private GameContext db = new GameContext();
 		public MainWindow() {
-			db.boardPieces.Add(new ObservableCollection<Piece>());
-			boardPieces = db.boardPieces.FirstOrDefault();
-			currentPlayer = db.currentPlayer.First();
-			db.SaveChanges();
-			InitializeComponent();
-			//flag0 = players[0].pieces.Single(x => x.getRank() == 0);
-			//flag1 = players[1].pieces.Single(x => x.getRank() == 0);
-			DataContext = this;
-			//players[0].placementGrid = pnlP1PiecesGrid;
-			//players[1].placementGrid = pnlP2PiecesGrid;
-			rows = 8;
-			columns = 9;
-			paintGrid();
-			//populatePlacement(0);
-			//populatePlacement(1);
+			using (var db = new GameContext()) {
+				boardPieces = new ObservableCollection<Piece>();
+				db.boards.Add(new Board(boardPieces));
+				boardPieces.Add(new Piece(1, 2, 0, 0));
+				currentPlayer = 0; //db.currentPlayer.First();
+				db.SaveChanges();
+				InitializeComponent();
+				//flag0 = players[0].pieces.Single(x => x.getRank() == 0);
+				//flag1 = players[1].pieces.Single(x => x.getRank() == 0);
+				DataContext = this;
+				//players[0].placementGrid = pnlP1PiecesGrid;
+				//players[1].placementGrid = pnlP2PiecesGrid;
+				rows = 8;
+				columns = 9;
+				paintGrid();
+				//populatePlacement(0);
+				//populatePlacement(1);
+			}
 		}
 
 		public static int CurrentPlayer {
@@ -189,7 +200,7 @@ namespace Game_of_Generals {
 		}
 
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
-			db.SaveChanges();
+			//db.SaveChanges();
 		}
 	}
 
