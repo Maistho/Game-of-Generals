@@ -29,7 +29,7 @@ namespace Game_of_Generals {
         }*/
 
 		public static bool legalMove(Piece piece, int[] newMove) {
-            if (turn > 1) {
+            //if (turn > 1) {
                 if (Math.Abs(piece.X - newMove[0]) == 1) {
                     if (Math.Abs(piece.Y - newMove[1]) == 0) {
                         return true;
@@ -45,9 +45,9 @@ namespace Game_of_Generals {
                     }
                 }
                 return false;
-            } else {
+            /*} else {
                 return false;
-            }
+            }*/
 		}
 
 		public static bool legalPlacement(int player, int row) {

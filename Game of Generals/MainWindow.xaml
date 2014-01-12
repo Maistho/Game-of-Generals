@@ -63,7 +63,7 @@
         <ItemsControl Name="gameBoard" Grid.Column="1" Grid.Row="1">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Grid ShowGridLines="True" MouseUp="grid_MouseUp">
+                    <Grid ShowGridLines="True" Background="Black" MouseUp="grid_MouseUp">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="100"/>
                             <RowDefinition Height="100"/>
@@ -91,16 +91,14 @@
             
             <ItemsControl.ItemContainerStyle>
                 <Style>
-                    <Setter Property="Grid.Column"
-                            Value="{Binding X}" />
-                    <Setter Property="Grid.Row"
-                            Value="{Binding Y}" />
+                    <Setter Property="Grid.Column" Value="{Binding X}" />
+                    <Setter Property="Grid.Row" Value="{Binding Y}" />
                 </Style>
             </ItemsControl.ItemContainerStyle>
             
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Image Source="{Binding Image}" MouseUp="{Binding piece_MouseUp}"/>
+                    <Image Source="{Binding Image}" MouseUp="piece_MouseUp"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
