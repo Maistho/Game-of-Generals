@@ -20,14 +20,15 @@ namespace Game_of_Generals {
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
 	public class GameContext : DbContext {
-		public DbSet<Board> boards { get; set; }
+		public DbSet<Game> games { get; set; }
 		//public DbSet<> currentPlayer { get; set; }
 	}
-	public class Board {
-		public Board(ObservableCollection<Piece> p) {
+	public class Game {
+		public Game(ObservableCollection<Piece> p) {
 			pieces = p;
 		}
 		public int boardId { get; set; }
+		public virtual int currentPlayer { get; set; }
 		public virtual ObservableCollection<Piece> pieces { get; set; }
 	}
 	public partial class MainWindow : Window {
@@ -46,14 +47,20 @@ namespace Game_of_Generals {
 		public static ObservableCollection<Piece> boardPieces;
 		public static Piece flag0, flag1;
 
+		private static Game game;
+
 
 		//private GameContext db = new GameContext();
 		public MainWindow() {
 			using (var db = new GameContext()) {
-				boardPieces = new ObservableCollection<Piece>();
-				db.boards.Add(new Board(boardPieces));
-				boardPieces.Add(new Piece(1, 2, 0, 0));
-				currentPlayer = 0; //db.currentPlayer.First();
+				if (db.games.Count() == 0) {
+					var boardPieces = new ObservableCollection<Piece>();
+					game = new Game(boardPieces);
+					db.games.Add(game);
+					game.currentPlayer = 0;
+				} else {
+					game = db.games.FirstOrDefault();
+				}
 				db.SaveChanges();
 				InitializeComponent();
 				//flag0 = players[0].pieces.Single(x => x.getRank() == 0);
