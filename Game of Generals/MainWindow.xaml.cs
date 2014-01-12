@@ -44,6 +44,8 @@ namespace Game_of_Generals {
 			rows = 8;
 			columns = 9;
 			paintGrid();
+            gameBoard.ItemsSource = boardPieces;
+            boardPieces.Add(new Piece(4,7,0,0));
 			//populatePlacement(0);
 			//populatePlacement(1);
 		}
@@ -115,11 +117,55 @@ namespace Game_of_Generals {
 			}
 		}*/
 
+        void piece_MouseUp(object sender, MouseButtonEventArgs e) {
+            Piece clicked = ((Piece)(((Image)sender).DataContext));
+            //Piece is on board, init moving
+            if (moving) {
+                if (clicked.Player != movedPiece.getPlayer()) {
+                    movedPiece.X = clicked.X;
+                    movedPiece.Y = clicked.Y;
+
+                    switch (Rules.stronger(clicked, movedPiece)) {
+                        case 0:
+                            boardPieces.Remove(clicked);
+                            boardPieces.Remove(movedPiece);
+                            break;
+                        case 1:
+                            boardPieces.Remove(movedPiece);
+                            break;
+                        case 2:
+                            boardPieces.Remove(clicked);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                moved = true;
+                moving = false;
+                movedPiece = null;
+            } else if (!moved && clicked.Player == CurrentPlayer) {
+                //TODO:	Highlight destinations, or should we?
+                moving = true;
+                movedPiece = clicked;
+            }
+            /*} else {
+                if (MainWindow.placementColumn != -1 && MainWindow.placementRow != -1) {
+                    X = MainWindow.placementColumn;
+                    Y = MainWindow.placementRow;
+                    Parent = (Grid)Application.Current.MainWindow.FindName("pnlBoardGrid");
+                    MainWindow.players[player].onBoardPieces += 1;
+                    MainWindow.placementColumn = -1;
+                    MainWindow.placementRow = -1;
+                }
+
+                //Set color to black on rect
+                //piece is not on board, finish placement
+            }*/
+            e.Handled = true;
+        }
 		void grid_MouseUp(object sender, MouseButtonEventArgs e) {
             Point position = e.GetPosition((Grid)sender);
-            int[] clickedPos = new int[2] { (int)(position.X / ((Grid)sender).ColumnDefinitions[0].ActualWidth -1), (int)(position.X / ((Grid)sender).RowDefinitions[0].ActualHeight -1)};
-            MessageBox.Show("You clicked at [" + clickedPos[0] + "," + clickedPos[1] + "].");
-
+            int[] clickedPos = new int[2] { (int)(position.X / ((Grid)sender).ColumnDefinitions[0].ActualWidth), (int)(position.Y / ((Grid)sender).RowDefinitions[0].ActualHeight)};
 			if (moving) {
 				if (Rules.legalMove(movedPiece, clickedPos)) {
                     movedPiece.X = clickedPos[0];
