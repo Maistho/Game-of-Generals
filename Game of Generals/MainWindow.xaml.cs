@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Data.Entity;
 
 namespace Game_of_Generals {
 	/// <summary>
@@ -31,16 +32,25 @@ namespace Game_of_Generals {
 		public static int placementColumn, placementRow;
 		public static bool moved;
 		public static ObservableCollection<Piece> deadPieces = new ObservableCollection<Piece>();
-        public static ObservableCollection<Piece> boardPieces = new ObservableCollection<Piece>();
+		public static ObservableCollection<Piece> boardPieces = new ObservableCollection<Piece>();
 		public static Piece flag0, flag1;
+
+		private class GameContext : DbContext {
+			public DbSet<ObservableCollection<Piece>> boardPieces { get; set; }
+			public DbSet<int> currentPlayer { get; set; }
+		}
+		private GameContext db = new GameContext();
 		public MainWindow() {
+			db.boardPieces.Add(new ObservableCollection<Piece>());
+			boardPieces = db.boardPieces.FirstOrDefault();
+			currentPlayer = db.currentPlayer.First();
+			db.SaveChanges();
 			InitializeComponent();
 			//flag0 = players[0].pieces.Single(x => x.getRank() == 0);
 			//flag1 = players[1].pieces.Single(x => x.getRank() == 0);
 			DataContext = this;
 			//players[0].placementGrid = pnlP1PiecesGrid;
 			//players[1].placementGrid = pnlP2PiecesGrid;
-			currentPlayer = 0;
 			rows = 8;
 			columns = 9;
 			paintGrid();
@@ -174,6 +184,10 @@ namespace Game_of_Generals {
 				currentPlayer = (currentPlayer + 1) % 2;
 			}
 
+		}
+
+		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
+			db.SaveChanges();
 		}
 	}
 
