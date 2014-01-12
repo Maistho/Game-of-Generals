@@ -19,26 +19,26 @@ namespace Game_of_Generals {
             return (turn < 2);
         }
 
-        public static bool mayPass(Player player) {
+        /*public static bool mayPass(Player player) {
             if (turn > 1 || player.onBoardPieces == 21) {
                 return true;
             } else {
                 //YOU SHALL NOT PASS
                 return false;
             }
-        }
+        }*/
 
 		public static bool legalMove(Piece piece, int[] newMove) {
             if (turn > 1) {
-                if (Math.Abs(piece.Position[0] - newMove[0]) == 1) {
-                    if (Math.Abs(piece.Position[1] - newMove[1]) == 0) {
+                if (Math.Abs(piece.X - newMove[0]) == 1) {
+                    if (Math.Abs(piece.Y - newMove[1]) == 0) {
                         return true;
                     } else {
                         return false;
                     }
 
-                } else if (Math.Abs(piece.Position[0] - newMove[0]) == 0) {
-                    if (Math.Abs(piece.Position[1] - newMove[1]) == 1) {
+                } else if (Math.Abs(piece.X - newMove[0]) == 0) {
+                    if (Math.Abs(piece.Y - newMove[1]) == 1) {
                         return true;
                     } else {
                         return false;
@@ -83,7 +83,7 @@ namespace Game_of_Generals {
 		}
 
 		public static int victoryCheck(Piece flagP1, Piece flagP2) {
-			if (flagP1.dead) {
+/*			if (flagP1.dead) {
 				return 2;
 			} else if(flagP2.dead) {
 				return 1;
@@ -99,7 +99,7 @@ namespace Game_of_Generals {
 				} else {
 					P2Winning = true;
 				}
-			}
+			}*/
 			return 0;
 		}
 

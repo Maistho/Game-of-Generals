@@ -23,6 +23,12 @@ namespace Game_of_Generals {
         private string blankImage;
         private string faceImage;
 
+
+        public int Player {
+            get {
+                return player;
+            }
+        }
         public string Image {
             get {
                 return image;

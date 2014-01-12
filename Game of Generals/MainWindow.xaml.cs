@@ -20,7 +20,7 @@ namespace Game_of_Generals {
 	/// </summary>
 	public partial class MainWindow : Window {
 
-		public static Player[] players = { new Player(new Grid(), 0), new Player(new Grid(), 1) };
+		//public static Player[] players = { new Player(new Grid(), 0), new Player(new Grid(), 1) };
 		private static int currentPlayer;
 		private int rows, columns;
 		private Rectangle lastRect;
@@ -35,17 +35,17 @@ namespace Game_of_Generals {
 		public static Piece flag0, flag1;
 		public MainWindow() {
 			InitializeComponent();
-			flag0 = players[0].pieces.Single(x => x.getRank() == 0);
-			flag1 = players[1].pieces.Single(x => x.getRank() == 0);
+			//flag0 = players[0].pieces.Single(x => x.getRank() == 0);
+			//flag1 = players[1].pieces.Single(x => x.getRank() == 0);
 			DataContext = this;
-			players[0].placementGrid = pnlP1PiecesGrid;
-			players[1].placementGrid = pnlP2PiecesGrid;
+			//players[0].placementGrid = pnlP1PiecesGrid;
+			//players[1].placementGrid = pnlP2PiecesGrid;
 			currentPlayer = 0;
 			rows = 8;
 			columns = 9;
 			paintGrid();
-			populatePlacement(0);
-			populatePlacement(1);
+			//populatePlacement(0);
+			//populatePlacement(1);
 		}
 
 		public static int CurrentPlayer {
@@ -102,7 +102,7 @@ namespace Game_of_Generals {
 			}
 		}
 
-		private void populatePlacement(int player) {
+/*		private void populatePlacement(int player) {
 			int i = 0;
 			int j = 0;
 			foreach (Piece piece in players[player].pieces) {
@@ -113,19 +113,20 @@ namespace Game_of_Generals {
 					++j;
 				}
 			}
-		}
+		}*/
 
 		void rect_MouseUp(object sender, MouseButtonEventArgs e) {
 			Rectangle rect = sender as Rectangle;
 			if (moving) {
 				int[] newMove = new int[2] { Grid.GetColumn(rect), Grid.GetRow(rect) };
 				if (Rules.legalMove(movedPiece, newMove)) {
-					movedPiece.Position = newMove;
+                    movedPiece.X = newMove[0];
+                    movedPiece.Y = newMove[1];
 					moved = true;
 				}
 				moving = false;
 			} else {
-                if (Rules.canPlace()) {
+                /*if (Rules.canPlace()) {
                     if (players[currentPlayer].pieces.Count() - players[currentPlayer].onBoardPieces != 0) {
                         players[currentPlayer].placementGrid.Visibility = System.Windows.Visibility.Visible;
 
@@ -142,7 +143,7 @@ namespace Game_of_Generals {
                     } else {
                         players[currentPlayer].placementGrid.Visibility = System.Windows.Visibility.Hidden;
                     }
-                }
+                }*/
 			}
             if (lastRect != null) lastRect.Fill = Brushes.Black;
             lastRect = rect;
@@ -156,19 +157,19 @@ namespace Game_of_Generals {
 				if (vic > 0) {
 					MessageBox.Show("Player " + vic.ToString() + " has won!");
 				}
-				foreach (Piece piece in players[currentPlayer].pieces) {
-					if (piece.OnBoard) piece.flip(true);
+				foreach (Piece piece in boardPieces) {
+					if (piece.Player == currentPlayer) piece.flip(true);
 				}
 				moved = false;
 				switchRectangle.Visibility = Visibility.Hidden;
 				btn.Content = "Finish Turn";
                 Rules.nextTurn();
-            } else if (Rules.mayPass(MainWindow.players[MainWindow.CurrentPlayer])) {
+            } else /*if (Rules.mayPass(MainWindow.players[MainWindow.CurrentPlayer]))*/ {
 				switchRectangle.Visibility = Visibility.Visible;
-				foreach (Piece piece in players[currentPlayer].pieces) {
-					if (piece.OnBoard) piece.flip(false);
+				foreach (Piece piece in boardPieces) {
+					if (piece.Player == currentPlayer) piece.flip(false);
 				}
-				players[currentPlayer].placementGrid.Visibility = Visibility.Hidden;
+				//players[currentPlayer].placementGrid.Visibility = Visibility.Hidden;
 				btn.Content = "Begin Turn";
 				currentPlayer = (currentPlayer + 1) % 2;
 			}
@@ -176,7 +177,7 @@ namespace Game_of_Generals {
 		}
 	}
 
-	public class Player {
+/*	public class Player {
 		public ObservableCollection<Piece> pieces = new ObservableCollection<Piece>();
 		public Grid placementGrid;
 		public int onBoardPieces;
@@ -198,5 +199,5 @@ namespace Game_of_Generals {
 				}
 			}
 		}
-	}
+	}*/
 }
