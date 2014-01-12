@@ -94,7 +94,7 @@ namespace Game_of_Generals {
 				} else {
 					P1Winning = true;
 				}
-			} else if (flagp2.row == 7) {
+			} else if (flagP2.row == 7) {
 				if (P2Winning == true) {
 					return 1;
 				} else {

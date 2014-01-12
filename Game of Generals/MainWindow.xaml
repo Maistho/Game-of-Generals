@@ -18,11 +18,13 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            
+
             <Grid Name="pnlP1PiecesGrid" Grid.Row="0" Visibility="Hidden">
                 <Grid.RowDefinitions>
-                    <RowDefinition/> <RowDefinition/>
-                    <RowDefinition/> <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -38,14 +40,20 @@
             </Grid>
             <Grid Name="pnlP2PiecesGrid" Grid.Row="1" Visibility="Hidden">
                 <Grid.RowDefinitions>
-                    <RowDefinition/> <RowDefinition/>
-                    <RowDefinition/> <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/> <ColumnDefinition/>
-                    <ColumnDefinition/> <ColumnDefinition/>
-                    <ColumnDefinition/> <ColumnDefinition/>
-                    <ColumnDefinition/> <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
             </Grid>
@@ -53,16 +61,24 @@
         </Grid>
         <Grid Name="pnlBoardGrid" Grid.Column="1" Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition/> <RowDefinition/>
-                <RowDefinition/> <RowDefinition/>
-                <RowDefinition/> <RowDefinition/>
-                <RowDefinition/> <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/> <ColumnDefinition/>
-                <ColumnDefinition/> <ColumnDefinition/>
-                <ColumnDefinition/> <ColumnDefinition/>
-                <ColumnDefinition/> <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
         </Grid>
