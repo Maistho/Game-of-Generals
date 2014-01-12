@@ -12,6 +12,7 @@ using System.ComponentModel;
 
 namespace Game_of_Generals {
 	public class Piece : INotifyPropertyChanged{
+		public int Id { get; set; }
 		private int rank;
 		//private Image img;
 		//private bool onBoard;
