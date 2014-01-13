@@ -26,6 +26,7 @@ namespace Game_of_Generals {
 			base.OnModelCreating(modelBuilder);
 		}
 		public DbSet<Game> games { get; set; }
+		public DbSet<Piece> pieces { get; set; }
 	}
 	public class Game {
 		public Game() {	}
@@ -48,6 +49,11 @@ namespace Game_of_Generals {
 		public MainWindow() {
 			InitializeComponent();
 			db = new GameContext();
+			startGame();
+			DataContext = this;
+			gameBoard.ItemsSource = game.pieces;
+		}
+		private void startGame() {
 			if (db.games.Count() == 0) {
 				// If no saved games
 				var boardPieces = new ObservableCollection<Piece>();
@@ -55,13 +61,22 @@ namespace Game_of_Generals {
 				db.games.Add(game);
 				game.currentPlayer = 0;
 				game.turn = 0;
+				//TODO: Init placement
 			} else {
 				// If saved games, then take the first one.
 				game = db.games.First();
 			}
 			db.SaveChanges();
-			DataContext = this;
-			gameBoard.ItemsSource = game.pieces;
+		}
+		private void endGame(int winner) {
+			if (winner > 0) {
+				MessageBox.Show("Player " + winner.ToString() + " has won!");
+				db.games.Remove(game);
+				db.pieces.RemoveRange(db.pieces);
+				db.SaveChanges();
+				startGame();
+				//TODO: Do cleanup stuff and show winner
+			}
 		}
         void piece_MouseUp(object sender, MouseButtonEventArgs e) {
             Piece clicked = ((Piece)(((Image)sender).DataContext));
@@ -152,11 +167,7 @@ namespace Game_of_Generals {
 			}
 			btn.Content = content;
 		}
-		private void endGame(int winner) {
-			if (winner > 0) {
-				//TODO: Do cleanup stuff and show winner
-			}
-		}
+
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
 			db.SaveChanges();
 		}
