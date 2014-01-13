@@ -143,7 +143,6 @@ namespace Game_of_Generals {
                 gameBoard.ItemsSource = game.pieces;
                 placing = true;
                 playing = false;
-				//TODO: Init placement
 			} else {
 				// If saved games, then take the first one.
 				game = db.games.First();
@@ -163,7 +162,6 @@ namespace Game_of_Generals {
 				MessageBox.Show("Player " + winner.ToString() + " has won!", "Game over!");
 				cleanUp();
 				startGame();
-				//TODO: Do cleanup stuff and show winner
 			}
 		}
         void piece_MouseUp(object sender, MouseButtonEventArgs e) {
