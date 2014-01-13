@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.Entity;
+using System.ComponentModel;
+using System.Collections;
 
 namespace Game_of_Generals {
 	/// <summary>
@@ -37,10 +39,61 @@ namespace Game_of_Generals {
 		public virtual int currentPlayer { get; set; }
 		public virtual ObservableCollection<Piece> pieces { get; set; }
 	}
+    public class piecePool : INotifyPropertyChanged {
+        private int player;
+        private Piece next;
+        private int amount;
+        private Stack<int[]> pieces;
+        public piecePool(int p) {
+            pieces = new Stack<int[]>();
+            int numRanks = Rules.numberOfRanks();
+            for (int i = 0; i <= numRanks; ++i) {
+                int numPieces = Rules.numberOfPieces(i);
+                pieces.Push(new int[2] { i, numPieces });
+            }
+            player = p;
+            amount = 0;
+            place();
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
+        public Piece NextPiece {
+            get {
+                return next;
+            }
+            set { }
+        }
+        public int Amount {
+            get {
+                return amount;
+            }
+            set { }
+        }
+        public void place() {
+            amount--;
+            if (amount <= 0) {
+                if (pieces.Count > 0) {
+                    int[] pieceData = pieces.Pop();
+                    next = new Piece(-1, -1, pieceData[0], player);
+                    amount = pieceData[1];
+                } else {
+                    amount = 0;
+                    next = null;
+                }
+                this.NotifyPropertyChanged("NextPiece");
+            }
+            this.NotifyPropertyChanged("Amount");
+        }
+        public void NotifyPropertyChanged(string propName) {
+            if (this.PropertyChanged != null) {
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
+            }
+        }
+    }
 	public partial class MainWindow : Window {
         public static int winner;
 		public static bool moving;
 		public static Piece movedPiece;
+        public static Piece nowPlacing;
 		private static GameContext db;
 		private static Game game;
 		public MainWindow() {
@@ -58,6 +111,8 @@ namespace Game_of_Generals {
 			}
 			db.SaveChanges();
 			DataContext = this;
+            piecePool test = new piecePool(0);
+            pnlSideGrid.DataContext = test;
 			gameBoard.ItemsSource = game.pieces;
 		}
         void piece_MouseUp(object sender, MouseButtonEventArgs e) {
