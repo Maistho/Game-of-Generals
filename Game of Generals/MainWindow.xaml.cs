@@ -242,7 +242,7 @@ namespace Game_of_Generals {
 
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
             if (!playing) {
-                //TODO: Cleanup
+                cleanUp();
             }
 			db.SaveChanges();
 		}
