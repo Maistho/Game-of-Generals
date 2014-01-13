@@ -35,7 +35,6 @@ namespace Game_of_Generals {
 		public Game(ObservableCollection<Piece> p) {
 			pieces = p;
 		}
-		public int turn { get; set; }
 		public int gameId { get; set; }
 		public virtual int turn { get; set; }
 		public virtual bool changingPlayers { get; set; }
@@ -96,7 +95,6 @@ namespace Game_of_Generals {
 	public partial class MainWindow : Window {
         public static int winner;
 		public static bool moving = false;
-		public static bool changingPlayers = false;
         public static bool placing = false;
         public static bool playing = false;
 		public static Piece movedPiece;
@@ -108,6 +106,7 @@ namespace Game_of_Generals {
 			InitializeComponent();
 			db = new GameContext();
 			startGame();
+			changeTurnButton.Content = (game.changingPlayers ? "Begin turn" : "End turn");
 			DataContext = this;
 			gameBoard.ItemsSource = game.pieces;
 		}
@@ -245,7 +244,7 @@ namespace Game_of_Generals {
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
             if (!playing) {
                 cleanUp();
-            }
+			}
 			db.SaveChanges();
 		}
         private void surrenderButton_Click(object sender, RoutedEventArgs e) {

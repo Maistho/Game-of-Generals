@@ -63,7 +63,7 @@
             <Image Name="placementImage" Source="{Binding NextPiece.Image}" Grid.Row="1"/>
             <Label Name="amountText" Content="Amount of shown pieces left: " Grid.Row="2"/>
             <Label Name="placementAmount" Content="{Binding Amount}" HorizontalAlignment="Right" Grid.Row="2"/>
-            <Button Name="changeTurnButton" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top" Content="End turn" FontSize="30" Click="changeTurnButton_Click" />
+            <Button Name="changeTurnButton" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top" Content ="Begin turn" FontSize="30" Click="changeTurnButton_Click"/>
             <Button Name="surrenderButton" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Surrender" FontSize="30" Click="surrenderButton_Click" />
         </Grid>
         <ItemsControl Name="gameBoard" Grid.Column="1" Grid.Row="1" >
