@@ -30,7 +30,6 @@ namespace Game_of_Generals {
 			face = "pieces/" + rank.ToString() + (player == 0 ? "" : "r") + ".png";
 			this.Image = face;
 		}
-
 		public class PieceConfiguration : EntityTypeConfiguration<Piece> {
 			public PieceConfiguration() {
 				Property(p => p.rank);
@@ -39,7 +38,6 @@ namespace Game_of_Generals {
 				Property(p => p.face);
 			}
 		}
-
         public int Player {
             get {
                 return player;
@@ -56,7 +54,6 @@ namespace Game_of_Generals {
                 }
             }
         }
-
 		public int X {
 			get {
 				return xpos;
@@ -79,28 +76,18 @@ namespace Game_of_Generals {
                 }
             }
 		}
-
         public event PropertyChangedEventHandler PropertyChanged;
-
         public void NotifyPropertyChanged(string propName) {
             if (this.PropertyChanged != null) {
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
             }
-
         }
-
-		
-
-
-
 		public int getRank() {
 			return rank;
 		}
-
 		public int getPlayer() {
 			return player;
 		}
-
 		public void flip(bool faceup) {
 			if (faceup) {
 				Image = face;
@@ -108,14 +95,5 @@ namespace Game_of_Generals {
 				Image = blank;
 			}
 		}
-
-/*		public bool OnBoard {
-			get {
-				return onBoard;
-			}
-			set {
-				onBoard = value;
-			}
-		}*/
 	}
 }
