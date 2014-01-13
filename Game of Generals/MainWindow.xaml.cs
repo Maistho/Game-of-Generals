@@ -47,16 +47,24 @@ namespace Game_of_Generals {
         private Piece next;
         private int amount;
         private Stack<int[]> pieces;
+        private bool visible;
         public piecePool(int p) {
-            pieces = new Stack<int[]>();
-            int numRanks = Rules.numberOfRanks();
-            for (int i = 0; i <= numRanks; ++i) {
-                int numPieces = Rules.numberOfPieces(i);
-                pieces.Push(new int[2] { i, numPieces });
+            if (p < 0) {
+                amount = 0;
+                player = p;
+                Visible = false;
+            } else {
+                pieces = new Stack<int[]>();
+                int numRanks = Rules.numberOfRanks();
+                for (int i = 0; i <= numRanks; ++i) {
+                    int numPieces = Rules.numberOfPieces(i);
+                    pieces.Push(new int[2] { i, numPieces });
+                }
+                player = p;
+                amount = 0;
+                Visible = true;
+                place();
             }
-            player = p;
-            amount = 0;
-            place();
         }
         public event PropertyChangedEventHandler PropertyChanged;
         public Piece NextPiece {
@@ -71,6 +79,17 @@ namespace Game_of_Generals {
             }
             set { }
         }
+        public bool Visible {
+            get {
+                return visible;
+            }
+            set {
+                if (this.visible != value) {
+                    this.visible = value;
+                    this.NotifyPropertyChanged("Visible");
+                }
+            }
+        }
         public void place() {
             amount--;
             if (amount <= 0) {
@@ -81,6 +100,7 @@ namespace Game_of_Generals {
                 } else {
                     amount = 0;
                     next = null;
+                    Visible = false;
                 }
                 this.NotifyPropertyChanged("NextPiece");
             }
@@ -127,6 +147,8 @@ namespace Game_of_Generals {
 			} else {
 				// If saved games, then take the first one.
 				game = db.games.First();
+                piecePools = new piecePool[2] { new piecePool(-1), new piecePool(-1) };
+                pnlSideGrid.DataContext = piecePools[game.currentPlayer];
                 playing = true;
 			}
 			db.SaveChanges();
@@ -151,7 +173,6 @@ namespace Game_of_Generals {
                 if (clicked.Player != movedPiece.getPlayer()) {
                     movedPiece.X = clicked.X;
                     movedPiece.Y = clicked.Y;
-
                     switch (Rules.stronger(clicked, movedPiece)) {
                         case 0:
                             game.pieces.Remove(clicked);
@@ -166,10 +187,12 @@ namespace Game_of_Generals {
                         default:
                             break;
                     }
+                    game.moved = true;
+                    moving = false;
+                    movedPiece = null;
+                } else {
+                    movedPiece = clicked;
                 }
-                game.moved = true;
-                moving = false;
-                movedPiece = null;
             } else if (!game.moved && clicked.Player == game.currentPlayer) {
                 moving = true;
                 movedPiece = clicked;
@@ -206,10 +229,10 @@ namespace Game_of_Generals {
             if (placing) {
                 MessageBox.Show("You must place all your pieces before passing the turn to the next player.", "Pieces left");
                 return;
-            }/* else if (!game.moved && changingPlayers) {
+            } else if (!game.moved && !game.changingPlayers && game.turn > 1) {
                 MessageBox.Show("You must make a move before passing the turn to the next player.");
                 return;
-            }*/
+            }
 			Button btn = sender as Button;
 			bool flip = false;
 			string content = "Begin turn";
@@ -230,8 +253,8 @@ namespace Game_of_Generals {
                     endGame(Rules.victoryCheck(q));
                 } else {
                     placing = true;
-                    pnlSideGrid.DataContext = piecePools[game.currentPlayer];
                 }
+                pnlSideGrid.DataContext = piecePools[game.currentPlayer];
 			}
 			foreach (var p in game.pieces) {
 				if (p.getPlayer() == player) {
