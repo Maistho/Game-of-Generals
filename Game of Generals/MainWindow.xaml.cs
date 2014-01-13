@@ -130,12 +130,15 @@ namespace Game_of_Generals {
 			}
 			db.SaveChanges();
 		}
+		private void cleanUp() {
+			db.games.Remove(game);
+			db.pieces.RemoveRange(db.pieces);
+			db.SaveChanges();
+		}
 		private void endGame(int winner) {
 			if (winner > 0) {
 				MessageBox.Show("Player " + winner.ToString() + " has won!");
-				db.games.Remove(game);
-				db.pieces.RemoveRange(db.pieces);
-				db.SaveChanges();
+				cleanUp();
 				startGame();
 				//TODO: Do cleanup stuff and show winner
 			}

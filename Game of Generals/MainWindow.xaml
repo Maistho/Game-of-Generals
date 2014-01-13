@@ -3,7 +3,43 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="900" Width="1120"
         Closing="Window_Closing">
+    <Window.Resources>
+        <DrawingBrush x:Key="GridBrush" Viewport="0,0,100,100" ViewportUnits="Absolute" TileMode="Tile">
+            <DrawingBrush.Drawing>
+                <DrawingGroup>
+                    <DrawingGroup.Children>
+                        <GeometryDrawing Brush="Black">
+                            <GeometryDrawing.Geometry>
+                                <RectangleGeometry Rect="0,0,100,100"/>
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                        <GeometryDrawing Geometry="M0,0 L100,0">
+                            <GeometryDrawing.Pen>
+                                <Pen Thickness="2" Brush="Green"/>
+                            </GeometryDrawing.Pen>
+                        </GeometryDrawing>
+                        <GeometryDrawing Geometry="M0,100 L100,100">
+                            <GeometryDrawing.Pen>
+                                <Pen Thickness="2" Brush="Green"/>
+                            </GeometryDrawing.Pen>
+                        </GeometryDrawing>
+                        <GeometryDrawing Geometry="M0,0 L0,100">
+                            <GeometryDrawing.Pen>
+                                <Pen Thickness="2" Brush="Green" />
+                            </GeometryDrawing.Pen>
+                        </GeometryDrawing>
+                        <GeometryDrawing Geometry="M100,0 L100,100">
+                                <GeometryDrawing.Pen>
+                                    <Pen Thickness="2" Brush="Green" />
+                                </GeometryDrawing.Pen>
+                            </GeometryDrawing>
+                    </DrawingGroup.Children>
+                </DrawingGroup>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+    </Window.Resources>
     <Grid Name="pnlMainGrid" Background="Beige">
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="800"/>
@@ -28,10 +64,10 @@
             <Label Name="placementAmount" Content="{Binding Amount}" HorizontalAlignment="Right" Grid.Row="2"/>
             <Button Name="changeTurnButton" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Top" Content="End turn" FontSize="30" Click="changeTurnButton_Click" />
         </Grid>
-        <ItemsControl Name="gameBoard" Grid.Column="1" Grid.Row="1">
+        <ItemsControl Name="gameBoard" Grid.Column="1" Grid.Row="1" >
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Grid ShowGridLines="True" Background="Black" MouseUp="grid_MouseUp">
+                    <Grid Background="{StaticResource GridBrush}" MouseUp="grid_MouseUp">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="100"/>
                             <RowDefinition Height="100"/>
