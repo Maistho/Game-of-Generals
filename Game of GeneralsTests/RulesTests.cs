@@ -9,13 +9,6 @@ using System.Collections.ObjectModel;
 namespace Game_of_Generals.Tests {
 	[TestFixture()]
 	public class RulesTests {
-		[Test()]
-		public void canPlaceTest() {
-			Assert.IsTrue(Rules.canPlace(0));
-			Assert.IsTrue(Rules.canPlace(1));
-			Assert.IsFalse(Rules.canPlace(2));
-			Assert.IsFalse(Rules.canPlace(10));
-		}
 
 		[Test()]
 		public void legalMoveTest() {
