@@ -32,6 +32,7 @@ namespace Game_of_Generals {
 		public Game(ObservableCollection<Piece> p) {
 			pieces = p;
 		}
+		public int turn { get; set; }
 		public int gameId { get; set; }
 		public virtual bool moved { get; set; }
 		public virtual int currentPlayer { get; set; }
@@ -39,7 +40,8 @@ namespace Game_of_Generals {
 	}
 	public partial class MainWindow : Window {
         public static int winner;
-		public static bool moving;
+		public static bool moving = false;
+		public static bool changingPlayers = false;
 		public static Piece movedPiece;
 		private static GameContext db;
 		private static Game game;
@@ -52,6 +54,7 @@ namespace Game_of_Generals {
 				game = new Game(boardPieces);
 				db.games.Add(game);
 				game.currentPlayer = 0;
+				game.turn = 0;
 			} else {
 				// If saved games, then take the first one.
 				game = db.games.First();
@@ -96,7 +99,7 @@ namespace Game_of_Generals {
             Point position = e.GetPosition((Grid)sender);
             int[] clickedPos = new int[2] { (int)(position.X / ((Grid)sender).ColumnDefinitions[0].ActualWidth), (int)(position.Y / ((Grid)sender).RowDefinitions[0].ActualHeight)};
 			if (moving) {
-				if (Rules.legalMove(movedPiece, clickedPos)) {
+				if (Rules.legalMove(movedPiece, clickedPos, game.turn)) {
                     movedPiece.X = clickedPos[0];
                     movedPiece.Y = clickedPos[1];
 					game.moved = true;
@@ -123,9 +126,36 @@ namespace Game_of_Generals {
                 }*/
 			}
 		}
-		private void finishButton_Click(object sender, RoutedEventArgs e) {
+		private void changeTurnButton_Click(object sender, RoutedEventArgs e) {
 			Button btn = sender as Button;
-            //TODO: Add function
+			bool flip = false;
+			string content = "Begin turn";
+			int player = game.currentPlayer;
+			if (!changingPlayers) {
+				changingPlayers = true;
+				game.moved = false;
+				game.turn++;
+				game.currentPlayer = (game.currentPlayer + 1) % 2;
+			} else {
+				changingPlayers = false;
+				flip = true;
+				content = "End turn";
+				var q = from g in game.pieces
+						where g.getRank() == 0
+						select g;
+				endGame(Rules.victoryCheck(q));
+			}
+			foreach (var p in game.pieces) {
+				if (p.getPlayer() == player) {
+					p.flip(flip);
+				}
+			}
+			btn.Content = content;
+		}
+		private void endGame(int winner) {
+			if (winner > 0) {
+				//TODO: Do cleanup stuff and show winner
+			}
 		}
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
 			db.SaveChanges();

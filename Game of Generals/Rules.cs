@@ -7,12 +7,9 @@ using System.Threading.Tasks;
 
 namespace Game_of_Generals {
 	class Rules {
-        private static int turn = 0;
 		private static bool P1Winning, P2Winning = false;
-        public static void nextTurn() {
-            ++turn;
-        }
-        public static bool canPlace() {
+
+        public static bool canPlace(int turn) {
             return (turn < 2);
         }
         /*public static bool mayPass(Player player) {
@@ -23,7 +20,7 @@ namespace Game_of_Generals {
                 return false;
             }
         }*/
-		public static bool legalMove(Piece piece, int[] newMove) {
+		public static bool legalMove(Piece piece, int[] newMove, int turn) {
            if (turn > 1) {
                 if (Math.Abs(piece.X - newMove[0]) == 1) {
                     if (Math.Abs(piece.Y - newMove[1]) == 0) {

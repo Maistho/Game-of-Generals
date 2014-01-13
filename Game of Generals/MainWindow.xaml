@@ -56,6 +56,6 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <Button Name="finishButton" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Finish turn" FontSize="30" Click="finishButton_Click" />
+        <Button Name="finishButton" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Finish turn" FontSize="30" Click="changeTurnButton_Click" />
     </Grid>
 </Window>
