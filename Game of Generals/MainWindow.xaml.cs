@@ -35,8 +35,9 @@ namespace Game_of_Generals {
 		public Game(ObservableCollection<Piece> p) {
 			pieces = p;
 		}
-		public int turn { get; set; }
 		public int gameId { get; set; }
+		public virtual int turn { get; set; }
+		public virtual bool changingPlayers { get; set; }
 		public virtual bool moved { get; set; }
 		public virtual int currentPlayer { get; set; }
 		public virtual ObservableCollection<Piece> pieces { get; set; }
@@ -94,7 +95,6 @@ namespace Game_of_Generals {
 	public partial class MainWindow : Window {
         public static int winner;
 		public static bool moving = false;
-		public static bool changingPlayers = false;
         public static bool placing = false;
         public static bool playing = false;
 		public static Piece movedPiece;
@@ -146,7 +146,7 @@ namespace Game_of_Generals {
         void piece_MouseUp(object sender, MouseButtonEventArgs e) {
             Piece clicked = ((Piece)(((Image)sender).DataContext));
             //Piece is on board, init moving
-            if (moving) {
+            if (moving && playing && Rules.legalMove(movedPiece, new int[] {clicked.X, clicked.Y}, game.turn)) {
                 if (clicked.Player != movedPiece.getPlayer()) {
                     movedPiece.X = clicked.X;
                     movedPiece.Y = clicked.Y;
@@ -213,13 +213,13 @@ namespace Game_of_Generals {
 			bool flip = false;
 			string content = "Begin turn";
 			int player = game.currentPlayer;
-			if (!changingPlayers) {
-				changingPlayers = true;
+			if (!game.changingPlayers) {
+				game.changingPlayers = true;
 				game.moved = false;
 				game.turn++;
 				game.currentPlayer = (game.currentPlayer + 1) % 2;
 			} else {
-				changingPlayers = false;
+				game.changingPlayers = false;
 				flip = true;
 				content = "End turn";
 				var q = from g in game.pieces
@@ -242,7 +242,7 @@ namespace Game_of_Generals {
 
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
             if (!playing) {
-                //TODO: Cleanup
+				cleanUp();
             }
 			db.SaveChanges();
 		}
