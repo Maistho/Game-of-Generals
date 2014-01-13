@@ -35,6 +35,7 @@ namespace Game_of_Generals {
 		public Game(ObservableCollection<Piece> p) {
 			pieces = p;
 		}
+		public int turn { get; set; }
 		public int gameId { get; set; }
 		public virtual int turn { get; set; }
 		public virtual bool changingPlayers { get; set; }
@@ -95,6 +96,7 @@ namespace Game_of_Generals {
 	public partial class MainWindow : Window {
         public static int winner;
 		public static bool moving = false;
+		public static bool changingPlayers = false;
         public static bool placing = false;
         public static bool playing = false;
 		public static Piece movedPiece;
@@ -137,7 +139,7 @@ namespace Game_of_Generals {
 		}
 		private void endGame(int winner) {
 			if (winner > 0) {
-				MessageBox.Show("Player " + winner.ToString() + " has won!");
+				MessageBox.Show("Player " + winner.ToString() + " has won!", "Game over!");
 				cleanUp();
 				startGame();
 				//TODO: Do cleanup stuff and show winner
@@ -197,13 +199,13 @@ namespace Game_of_Generals {
                         placing = false;
                     }
                 } else {
-                    MessageBox.Show("Illegal placement. You must place the piece within the three rows closes to your edge of the board.");
+                    MessageBox.Show("Illegal placement. You must place the piece within the three rows closest to your edge of the board.", "Oh no, not there!");
                 }
 			}
 		}
 		private void changeTurnButton_Click(object sender, RoutedEventArgs e) {
             if (placing) {
-                MessageBox.Show("You must place all your pieces before passing the turn to the next player.");
+                MessageBox.Show("You must place all your pieces before passing the turn to the next player.", "Pieces left");
                 return;
             }/* else if (!game.moved && changingPlayers) {
                 MessageBox.Show("You must make a move before passing the turn to the next player.");
@@ -242,9 +244,15 @@ namespace Game_of_Generals {
 
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
             if (!playing) {
-				cleanUp();
+                cleanUp();
             }
 			db.SaveChanges();
 		}
+        private void surrenderButton_Click(object sender, RoutedEventArgs e) {
+            MessageBoxResult result = MessageBox.Show("Are you sure you want to surrender?", "Coward.", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes) {
+                endGame(((game.currentPlayer + 1) % 2) + 1);
+            }
+        }
 	}
 }
