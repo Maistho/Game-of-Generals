@@ -105,6 +105,8 @@ namespace Game_of_Generals {
 			startGame();
 			DataContext = this;
 			gameBoard.ItemsSource = game.pieces;
+            piecePool test = new piecePool(0);
+            pnlSideGrid.DataContext = test;
 		}
 		private void startGame() {
 			if (db.games.Count() == 0) {
@@ -120,8 +122,6 @@ namespace Game_of_Generals {
 				game = db.games.First();
 			}
 			db.SaveChanges();
-            piecePool test = new piecePool(0);
-            pnlSideGrid.DataContext = test;
 		}
 		private void endGame(int winner) {
 			if (winner > 0) {
