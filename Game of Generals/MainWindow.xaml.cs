@@ -137,7 +137,7 @@ namespace Game_of_Generals {
 		}
 		private void endGame(int winner) {
 			if (winner > 0) {
-				MessageBox.Show("Player " + winner.ToString() + " has won!");
+				MessageBox.Show("Player " + winner.ToString() + " has won!", "Game over!");
 				cleanUp();
 				startGame();
 				//TODO: Do cleanup stuff and show winner
@@ -197,13 +197,13 @@ namespace Game_of_Generals {
                         placing = false;
                     }
                 } else {
-                    MessageBox.Show("Illegal placement. You must place the piece within the three rows closes to your edge of the board.");
+                    MessageBox.Show("Illegal placement. You must place the piece within the three rows closest to your edge of the board.", "Oh no, not there!");
                 }
 			}
 		}
 		private void changeTurnButton_Click(object sender, RoutedEventArgs e) {
             if (placing) {
-                MessageBox.Show("You must place all your pieces before passing the turn to the next player.");
+                MessageBox.Show("You must place all your pieces before passing the turn to the next player.", "Pieces left");
                 return;
             }/* else if (!game.moved && changingPlayers) {
                 MessageBox.Show("You must make a move before passing the turn to the next player.");
@@ -246,5 +246,11 @@ namespace Game_of_Generals {
             }
 			db.SaveChanges();
 		}
+        private void surrenderButton_Click(object sender, RoutedEventArgs e) {
+            MessageBoxResult result = MessageBox.Show("Are you sure you want to surrender?", "Coward.", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes) {
+                endGame(((game.currentPlayer + 1) % 2) + 1);
+            }
+        }
 	}
 }
