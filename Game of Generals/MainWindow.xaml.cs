@@ -95,18 +95,19 @@ namespace Game_of_Generals {
         public static int winner;
 		public static bool moving = false;
 		public static bool changingPlayers = false;
+        public static bool placing = false;
+        public static bool playing = false;
 		public static Piece movedPiece;
         public static Piece nowPlacing;
 		private static GameContext db;
 		private static Game game;
+        private piecePool[] piecePools;
 		public MainWindow() {
 			InitializeComponent();
 			db = new GameContext();
 			startGame();
 			DataContext = this;
 			gameBoard.ItemsSource = game.pieces;
-            piecePool test = new piecePool(0);
-            pnlSideGrid.DataContext = test;
 		}
 		private void startGame() {
 			if (db.games.Count() == 0) {
@@ -116,10 +117,16 @@ namespace Game_of_Generals {
 				db.games.Add(game);
 				game.currentPlayer = 0;
 				game.turn = 0;
+                piecePools = new piecePool[2] { new piecePool(0), new piecePool(1) };
+                pnlSideGrid.DataContext = piecePools[game.currentPlayer];
+                gameBoard.ItemsSource = game.pieces;
+                placing = true;
+                playing = false;
 				//TODO: Init placement
 			} else {
 				// If saved games, then take the first one.
 				game = db.games.First();
+                playing = true;
 			}
 			db.SaveChanges();
 		}
@@ -175,28 +182,30 @@ namespace Game_of_Generals {
 					game.moved = true;
 				}
 				moving = false;
-			} else {
-                /*if (Rules.canPlace()) {
-                    if (players[currentPlayer].pieces.Count() - players[currentPlayer].onBoardPieces != 0) {
-                        players[currentPlayer].placementGrid.Visibility = System.Windows.Visibility.Visible;
-
-                        if (Rules.legalPlacement(currentPlayer, Grid.GetRow(rect))) {
-                            placementColumn = Grid.GetColumn(rect);
-                            placementRow = Grid.GetRow(rect);
-                            rect.Fill = Brushes.LightGreen;
-                        } else {
-                            placementColumn = -1;
-                            placementRow = -1;
-                            rect.Fill = Brushes.PaleVioletRed;
+			} else if (placing) {
+                if (Rules.legalPlacement(game.currentPlayer, clickedPos[1])) {
+                    nowPlacing = new Piece(clickedPos[0], clickedPos[1], piecePools[game.currentPlayer].NextPiece.getRank(), game.currentPlayer);
+                    game.pieces.Add(nowPlacing);
+                    piecePools[game.currentPlayer].place();
+                    if (piecePools[game.currentPlayer].NextPiece == null) {
+                        if (piecePools[(game.currentPlayer + 1) % 2].NextPiece == null) {
+                            playing = true;
                         }
-
-                    } else {
-                        players[currentPlayer].placementGrid.Visibility = System.Windows.Visibility.Hidden;
+                        placing = false;
                     }
-                }*/
+                } else {
+                    MessageBox.Show("Illegal placement. You must place the piece within the three rows closes to your edge of the board.");
+                }
 			}
 		}
 		private void changeTurnButton_Click(object sender, RoutedEventArgs e) {
+            if (placing) {
+                MessageBox.Show("You must place all your pieces before passing the turn to the next player.");
+                return;
+            }/* else if (!game.moved && changingPlayers) {
+                MessageBox.Show("You must make a move before passing the turn to the next player.");
+                return;
+            }*/
 			Button btn = sender as Button;
 			bool flip = false;
 			string content = "Begin turn";
@@ -213,7 +222,12 @@ namespace Game_of_Generals {
 				var q = from g in game.pieces
 						where g.getRank() == 0
 						select g;
-				endGame(Rules.victoryCheck(q));
+                if (playing) {
+                    endGame(Rules.victoryCheck(q));
+                } else {
+                    placing = true;
+                    pnlSideGrid.DataContext = piecePools[game.currentPlayer];
+                }
 			}
 			foreach (var p in game.pieces) {
 				if (p.getPlayer() == player) {
@@ -224,6 +238,9 @@ namespace Game_of_Generals {
 		}
 
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
+            if (!playing) {
+                //TODO: Cleanup
+            }
 			db.SaveChanges();
 		}
 	}

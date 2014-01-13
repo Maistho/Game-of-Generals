@@ -80,12 +80,14 @@ namespace Game_of_Generals {
 				return 1;
 			} else if (flagP1.Y == 0) {
 				if (P1Winning == true) {
+                    P1Winning = false;
 					return 1;
 				} else {
 					P1Winning = true;
 				}
 			} else if (flagP2.Y == 7) {
 				if (P2Winning == true) {
+                    P2Winning = false;
 					return 1;
 				} else {
 					P2Winning = true;
