@@ -120,10 +120,8 @@ namespace Game_of_Generals {
 				game = db.games.First();
 			}
 			db.SaveChanges();
-			DataContext = this;
             piecePool test = new piecePool(0);
             pnlSideGrid.DataContext = test;
-			gameBoard.ItemsSource = game.pieces;
 		}
 		private void endGame(int winner) {
 			if (winner > 0) {
