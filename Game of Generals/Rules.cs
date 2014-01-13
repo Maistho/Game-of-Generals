@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Game_of_Generals {
-	class Rules {
+	public class Rules {
 		private static bool P1Winning, P2Winning = false;
 
         public static bool canPlace(int turn) {
