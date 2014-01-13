@@ -70,5 +70,6 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+        <Button Name="changeTurnButton" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Content="End turn" FontSize="30" Click="changeTurnButton_Click" />
     </Grid>
 </Window>
