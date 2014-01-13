@@ -9,22 +9,36 @@ using System.Windows.Media;
 using System.Windows.Input;
 using System.Windows;
 using System.ComponentModel;
+using System.Data.Entity.ModelConfiguration;
 
 namespace Game_of_Generals {
 	public class Piece : INotifyPropertyChanged{
 		public int Id { get; set; }
-		private int rank;
-		//private Image img;
-		//private bool onBoard;
-		private int player;
-		//private BitmapImage blank;
-		//private BitmapImage face;
-        //private BitmapImage image;
+		private int rank { get; set; }
+		private int player { get; set; }
 		private int xpos, ypos;
-        private string image;
-        private string blank;
-        private string face;
+		private string image { get; set; }
+		private string blank { get; set; }
+		private string face { get; set; }
+		public Piece() { }
+		public Piece(int x, int y, int r, int p) {
+			xpos = x;
+			ypos = y;
+			rank = r;
+			player = p;
+			blank = "pieces/empty" + (player == 0 ? "" : "r") + ".png";
+			face = "pieces/" + rank.ToString() + (player == 0 ? "" : "r") + ".png";
+			this.Image = face;
+		}
 
+		public class PieceConfiguration : EntityTypeConfiguration<Piece> {
+			public PieceConfiguration() {
+				Property(p => p.rank);
+				Property(p => p.player);
+				Property(p => p.blank);
+				Property(p => p.face);
+			}
+		}
 
         public int Player {
             get {
@@ -75,26 +89,7 @@ namespace Game_of_Generals {
 
         }
 
-		public Piece() { }
-		public Piece(int x, int y, int r, int p) {
-            xpos = x;
-            ypos = y;
-			rank = r;
-			player = p;
-            blank = "pieces/empty" + (player == 0 ? "" : "r") + ".png";
-            face = "pieces/" + rank.ToString() + (player == 0 ? "" : "r") + ".png";
-            this.Image = face;
-
-			/*img = new Image();
-
-			blank = new BitmapImage(new Uri("pack://application:,,,/Game of Generals;component/pieces/empty" + (player == 0 ? "" : "r") + ".png", UriKind.Absolute));
-			face = new BitmapImage(new Uri("pack://application:,,,/Game of Generals;component/pieces/" + rank.ToString() + (player == 0 ? "" : "r") + ".png", UriKind.Absolute));
-            Image = face;
-
-			img.Source = face;
-			img.Stretch = Stretch.Uniform;
-			img.MouseUp += img_MouseUp;*/
-		}
+		
 
 
 

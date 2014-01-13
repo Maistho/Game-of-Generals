@@ -82,10 +82,12 @@ namespace Game_of_Generals {
 			}
 		}
 
-		public static int victoryCheck(Piece flagP1, Piece flagP2) {
-/*			if (flagP1.dead) {
+		public static int victoryCheck(IEnumerable<Piece> flags) {
+			Piece flagP1 = flags.FirstOrDefault(f=> f.getPlayer() == 0);
+			Piece flagP2 = flags.FirstOrDefault(f=> f.getPlayer() == 1);
+			if (flagP1 == null) {
 				return 2;
-			} else if(flagP2.dead) {
+			} else if(flagP2 == null) {
 				return 1;
 			} else if (flagP1.Y == 0) {
 				if (P1Winning == true) {
@@ -99,7 +101,7 @@ namespace Game_of_Generals {
 				} else {
 					P2Winning = true;
 				}
-			}*/
+			}
 			return 0;
 		}
 

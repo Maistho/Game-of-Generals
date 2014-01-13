@@ -20,33 +20,33 @@ namespace Game_of_Generals {
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
 	public class GameContext : DbContext {
+		protected override void OnModelCreating(DbModelBuilder modelBuilder) {
+			modelBuilder
+				.Configurations.Add(new Piece.PieceConfiguration());
+			base.OnModelCreating(modelBuilder);
+		}
 		public DbSet<Game> games { get; set; }
 		//public DbSet<> currentPlayer { get; set; }
 	}
 	public class Game {
-		public Game() {
-
-		}
+		public Game() {	}
 		public Game(ObservableCollection<Piece> p) {
 			pieces = p;
 		}
 		public int gameId { get; set; }
+		public virtual bool moved { get; set; }
 		public virtual int currentPlayer { get; set; }
 		public virtual ObservableCollection<Piece> pieces { get; set; }
 	}
 	public partial class MainWindow : Window {
 
 		//public static Player[] players = { new Player(new Grid(), 0), new Player(new Grid(), 1) };
-		private static int currentPlayer;
 		private int rows, columns;
 		private Rectangle lastRect;
         public static bool gameEnd;
         public static int winner;
 		public static bool moving;
 		public static Piece movedPiece;
-		public static int placementColumn, placementRow;
-		public static bool moved;
-		public static Piece flag0, flag1;
 
 		private static GameContext db;
 		private static Game game;
@@ -54,6 +54,7 @@ namespace Game_of_Generals {
 
 		//private GameContext db = new GameContext();
 		public MainWindow() {
+			InitializeComponent();
 			db = new GameContext();
 			if (db.games.Count() == 0) {
 				// If no saved games
@@ -67,7 +68,7 @@ namespace Game_of_Generals {
 				game = db.games.First();
 			}
 				db.SaveChanges();
-			InitializeComponent();
+			
 			//flag0 = players[0].pieces.Single(x => x.getRank() == 0);
 			//flag1 = players[1].pieces.Single(x => x.getRank() == 0);
 			DataContext = this;
@@ -78,12 +79,13 @@ namespace Game_of_Generals {
 			paintGrid();
 			gameBoard.ItemsSource = game.pieces;
             game.pieces.Add(new Piece(4,7,0,0));
+			game.pieces.Add(new Piece(4, 0, 1, 1));
 			//populatePlacement(0);
 			//populatePlacement(1);
 		}
 
 		public static int CurrentPlayer {
-			get { return currentPlayer; }
+			get { return game.currentPlayer; }
 		}
 
 		private void paintGrid() {
@@ -172,10 +174,10 @@ namespace Game_of_Generals {
                             break;
                     }
                 }
-                moved = true;
+                game.moved = true;
                 moving = false;
                 movedPiece = null;
-            } else if (!moved && clicked.Player == CurrentPlayer) {
+            } else if (!game.moved && clicked.Player == CurrentPlayer) {
                 //TODO:	Highlight destinations, or should we?
                 moving = true;
                 movedPiece = clicked;
@@ -202,7 +204,7 @@ namespace Game_of_Generals {
 				if (Rules.legalMove(movedPiece, clickedPos)) {
                     movedPiece.X = clickedPos[0];
                     movedPiece.Y = clickedPos[1];
-					moved = true;
+					game.moved = true;
 				}
 				moving = false;
 			} else {
@@ -231,27 +233,29 @@ namespace Game_of_Generals {
 
 		private void finishButton_Click(object sender, RoutedEventArgs e) {
 			Button btn = sender as Button;
-			
 			if (switchRectangle.Visibility == Visibility.Visible) {
-				int vic = Rules.victoryCheck(flag0, flag1);
+				var q = from g in game.pieces
+						where g.getRank() == 0
+						select g;
+				int vic = Rules.victoryCheck(q);
 				if (vic > 0) {
 					MessageBox.Show("Player " + vic.ToString() + " has won!");
 				}
 				foreach (Piece piece in game.pieces) {
-					if (piece.Player == currentPlayer) piece.flip(true);
+					if (piece.Player == game.currentPlayer) piece.flip(true);
 				}
-				moved = false;
+				game.moved = false;
 				switchRectangle.Visibility = Visibility.Hidden;
 				btn.Content = "Finish Turn";
                 Rules.nextTurn();
             } else /*if (Rules.mayPass(MainWindow.players[MainWindow.CurrentPlayer]))*/ {
 				switchRectangle.Visibility = Visibility.Visible;
 				foreach (Piece piece in game.pieces) {
-					if (piece.Player == currentPlayer) piece.flip(false);
+					if (piece.Player == game.currentPlayer) piece.flip(false);
 				}
 				//players[currentPlayer].placementGrid.Visibility = Visibility.Hidden;
 				btn.Content = "Begin Turn";
-				currentPlayer = (currentPlayer + 1) % 2;
+				game.currentPlayer = (game.currentPlayer + 1) % 2;
 			}
 
 		}
